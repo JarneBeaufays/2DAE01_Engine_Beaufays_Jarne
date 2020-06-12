@@ -20,7 +20,7 @@ namespace dae
 		// Private functions
 		InputAction* GetInputAction(const std::string& inputAction);
 		bool IsPressed(PhysicalButton button) const;
-		void HandleControllerInput() const;
+		void HandleInput() const;
 
 		// Variables
 		std::vector<InputAction*> m_InputActions;

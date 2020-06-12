@@ -37,7 +37,7 @@ bool dae::InputManager::ProcessInput()
 	XInputGetState(1, &m_CurrentState);
 
 	// Check our Buttons for the controller
-	HandleControllerInput();
+	HandleInput();
 
 	return true;
 }
@@ -70,13 +70,21 @@ bool dae::InputManager::IsPressed(PhysicalButton button) const
 		return state[SDL_SCANCODE_E];
 	case PhysicalButton::ButtonR:
 		return state[SDL_SCANCODE_R];
+	case PhysicalButton::ButtonQ:
+		return state[SDL_SCANCODE_Q];
+	case PhysicalButton::ButtonS:
+		return state[SDL_SCANCODE_S];
+	case PhysicalButton::ButtonD:
+		return state[SDL_SCANCODE_D];
+	case PhysicalButton::ButtonF:
+		return state[SDL_SCANCODE_F];
 	}
 
 	// Our button is not pressed
 	return false;
 }
 
-void dae::InputManager::HandleControllerInput() const
+void dae::InputManager::HandleInput() const
 {
 	// Check if our button is pressed
 	for (InputAction* pButton : m_InputActions) 

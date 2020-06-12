@@ -20,5 +20,6 @@ private:
 	// Private functions
 	void InitSprites();
 	void InitStateMachine();
+	void InitControls();
 
 };

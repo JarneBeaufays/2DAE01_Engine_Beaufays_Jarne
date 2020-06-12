@@ -1,7 +1,7 @@
 ﻿  Player.cpp
-D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\BubbleBobble\Player.cpp(20,12): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\BubbleBobble\Player.cpp(74,22): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\BubbleBobble\Player.cpp(75,22): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\BubbleBobble\Player.cpp(76,15): warning C4244: '=': conversion from 'const float' to 'int', possible loss of data
-D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\BubbleBobble\Player.cpp(77,15): warning C4244: '=': conversion from 'const float' to 'int', possible loss of data
+D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\BubbleBobble\Player.cpp(21,12): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\BubbleBobble\Player.cpp(65,22): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\BubbleBobble\Player.cpp(66,22): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\BubbleBobble\Player.cpp(67,15): warning C4244: '=': conversion from 'const float' to 'int', possible loss of data
+D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\BubbleBobble\Player.cpp(68,15): warning C4244: '=': conversion from 'const float' to 'int', possible loss of data
   BubbleBobble.vcxproj -> D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\x64\Debug\BubbleBobble.exe

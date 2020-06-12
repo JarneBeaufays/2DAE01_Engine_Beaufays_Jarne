@@ -19,7 +19,10 @@ enum class PhysicalButton
 
 	// Keyboard buttons
 	ButtonA, ButtonZ,
-	ButtonE, ButtonR
+	ButtonE, ButtonR,
+
+	ButtonQ, ButtonS,
+	ButtonD, ButtonF
 };
 
 class InputAction

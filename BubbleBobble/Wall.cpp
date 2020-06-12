@@ -14,7 +14,7 @@ Wall::Wall(dae::Scene* pScene, b2Vec2 position, b2Vec2 size)
 	float ppm = pScene->GetPPM();
 
 	// Adding components
-	SpriteComponent* pSprite{ new SpriteComponent(this, "BBSprites/wall.png") };
+	SpriteComponent* pSprite{ new SpriteComponent(this, "Idle", "BBSprites/wall.png") };
 	AddComponent(pSprite);
 
 	BoxCollider* pBoxCollider{ new BoxCollider(this, 0.0f, 0.0f, size.x, size.y, ppm) };

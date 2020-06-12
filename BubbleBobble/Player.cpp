@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "RigidBody2D.h"
 #include "SpriteComponent.h"
+#include "AnimatorComponent.h"
 #include "StateMachineComponent.h"
 #include "TagComponent.h"
 #include "Texture2D.h"
@@ -40,17 +41,7 @@ Player::Player(dae::Scene* pScene, b2Vec2 position, b2Vec2 size)
 	InitStateMachine();
 
 	// Creating controls
-	Command* pWalkRight{ new Command(
-		// OnPress:
-		[pRigidBody]() { std::cout << "IM: On Press -> Player started walking\n"; },
-
-		// OnRelease:
-		[pRigidBody]() {std::cout << "IM: On Release -> Player stopped walking\n"; },
-
-		// OnDown: Move Right
-		[pRigidBody]() { pRigidBody->AddForce(b2Vec2(20.f, 0.f)); }
-	)};
-	dae::InputManager::GetInstance().CreateInputAction("WalkRight", pWalkRight, PhysicalButton::ButtonA);
+	InitControls();
 }
 
 void Player::Update()
@@ -87,47 +78,125 @@ void Player::Render() const
 
 void Player::InitSprites()
 {
-	// Creating a first sprite
-	SpriteComponent* pCheffSpriteComponent{ new SpriteComponent(this, "Cheff.png", 0.05f, 12, 4, true) };
-	pCheffSpriteComponent->SetSize(2.f, 1.2f);
-	AddComponent(pCheffSpriteComponent);
-
-	// Creating a second sprite
-	SpriteComponent* pBombSpriteComponent{ new SpriteComponent(this, "Bomb.png", 0.05f, 10, 5, true) };
+	// ----- SPRITES AND ANIMATIONS ----- //
+	// Creating a regular sprite
+	SpriteComponent* pBombSpriteComponent{ new SpriteComponent(this, "Fly", "Sprites/Bomb.png", 0.05f, 10, 5, true) };
 	pBombSpriteComponent->SetOffset(-10.f, 50.f);
 	pBombSpriteComponent->SetSize(1.6f, 1.f);
 	pBombSpriteComponent->Flip();
 	AddComponent(pBombSpriteComponent);
+
+	// Creating an animator
+	SpriteComponent* pCheffIdle{ new SpriteComponent(this, "Idle", "Sprites/Cheff_Idle.png", 0.05f, 16, 4, true) };
+	pCheffIdle->SetSize(2.f, 1.2f);
+
+	SpriteComponent* pCheffRun{ new SpriteComponent(this, "Run", "Sprites/Cheff_Run.png", 0.05f, 16, 4, true) };
+	pCheffRun->SetSize(2.f, 1.2f);
+
+	AnimatorComponent* pAnimator{ new AnimatorComponent(this) };
+	pAnimator->AddSprite(pCheffIdle);
+	pAnimator->AddSprite(pCheffRun);
+	AddComponent(pAnimator);
 }
 
 void Player::InitStateMachine()
 {
-	// First we create a state
+	// ----- STATE MACHINE ----- //
+	// Idle State
 	State* pIdleState{ new State("Idle") };
-	std::function<void()> entryTestFunction{ []() { std::cout << "SM: Entry -> Player now idle\n"; } };
-	pIdleState->AddEntryAction(entryTestFunction);
+	std::function<void()> onEntryIdle
+	{
+		[this]()
+		{ 
+			AnimatorComponent* pAnim{ static_cast<AnimatorComponent*>(this->GetComponent("AnimatorComponent"))};
+			pAnim->SetActiveSprite("Idle");
+		}
+	};
+	pIdleState->AddEntryAction(onEntryIdle);
 
-	State* pRunningState{ new State("RunningState") };
-	std::function<void()> runningAction{ []() { std::cout << "SM: Entry -> Started running\n"; } };
-	pRunningState->AddEntryAction(runningAction);
+	// Running State
+	State* pRunningState{ new State("Running") };
+	std::function<void()> onEntryRunning
+	{
+		[this]()
+		{ 
+			static_cast<AnimatorComponent*>(this->GetComponent("AnimatorComponent"))->SetActiveSprite("Run"); 
+		} 
+	};
+	pRunningState->AddEntryAction(onEntryRunning);
 
-	// Adding a transition from idle to running
+	// Transition: Idle -> Running
 	Transition* pTranIdleToRun{ new Transition(pRunningState) };
-	std::function<bool()> runningCondition{ []() { return dae::InputManager::GetInstance().InputActionPressed("WalkRight"); } };
+	std::function<bool()> runningCondition
+	{
+		[]() 
+		{ 
+			return dae::InputManager::GetInstance().InputActionPressed("WalkRight") || dae::InputManager::GetInstance().InputActionPressed("WalkLeft"); 
+		} 
+	};
 	pTranIdleToRun->AddCondition(runningCondition);
 	pIdleState->AddTransition(pTranIdleToRun);
 
-	// Adding a transition from running to idle
+	// Transition: Running -> Idle
 	Transition* pTranRunningToIdle{ new Transition(pIdleState) };
-	std::function<bool()> idleCondition{ []() { return !dae::InputManager::GetInstance().InputActionPressed("WalkRight"); } };
+	std::function<bool()> idleCondition
+	{ 
+		[]() 
+		{ 
+			return !dae::InputManager::GetInstance().InputActionPressed("WalkRight") && !dae::InputManager::GetInstance().InputActionPressed("WalkLeft"); 
+		} 
+	};
 	pTranRunningToIdle->AddCondition(idleCondition);
-	std::function<void()> exitAction{ []() { std::cout << "SM: Exit -> Stopped running\n"; } };
-	pTranRunningToIdle->AddExitAction(exitAction);
 	pRunningState->AddTransition(pTranRunningToIdle);
 
 	// Now we create the component and give our starting state to it
 	StateMachineComponent* pStateMachine{ new StateMachineComponent(this, pIdleState) };
 	AddComponent(pStateMachine);
+}
+
+void Player::InitControls()
+{
+	// ----- CONTROLS ----- //
+	// Walk right
+	Command* pWalkRight{ new Command(
+		// OnPress:
+		[this]()
+		{ 
+			std::cout << "IM: On Press -> Player started walking -> Right ->\n"; 
+			AnimatorComponent* pAnim{ static_cast<AnimatorComponent*>(this->GetComponent("AnimatorComponent")) };
+			pAnim->SetFlipped(false);
+		},
+
+		// OnRelease:
+		[]() {std::cout << "IM: On Release -> Player stopped walking -> Right ->\n"; },
+
+		// OnDown: Move Right
+		[this]()
+		{
+			static_cast<RigidBody2D*>(this->GetComponent("RigidBody2D"))->AddForce(b2Vec2(20.f, 0.f)); 
+		}
+	) };
+	dae::InputManager::GetInstance().CreateInputAction("WalkRight", pWalkRight, PhysicalButton::ButtonD);
+
+	// Walk left
+	Command* pWalkLeft{ new Command(
+		// OnPress:
+		[this]()
+		{
+			std::cout << "IM: On Press -> Player started walking <- Left <-\n";
+			AnimatorComponent* pAnim{ static_cast<AnimatorComponent*>(this->GetComponent("AnimatorComponent")) };
+			pAnim->SetFlipped(true);
+		},
+
+		// OnRelease:
+		[]() {std::cout << "IM: On Release -> Player stopped walking <- Left <-\n"; },
+
+		// OnDown: Move Right
+		[this]()
+		{
+			static_cast<RigidBody2D*>(this->GetComponent("RigidBody2D"))->AddForce(b2Vec2(-20.f, 0.f));
+		}) };
+	dae::InputManager::GetInstance().CreateInputAction("WalkLeft", pWalkLeft, PhysicalButton::ButtonA);
 }
 
 void Player::OnTriggerEnter()

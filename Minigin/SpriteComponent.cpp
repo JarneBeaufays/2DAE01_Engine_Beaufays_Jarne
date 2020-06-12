@@ -6,9 +6,10 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 
-SpriteComponent::SpriteComponent(dae::GameObject* pParent, const std::string& filePath, float frameTime, int frames, int cols, bool loop)
+SpriteComponent::SpriteComponent(dae::GameObject* pParent, const std::string& name, const std::string& filePath, float frameTime, int frames, int cols, bool loop)
 	: m_spTexture{ dae::ResourceManager::GetInstance().LoadTexture(filePath) }
 	, m_FrameTime{ frameTime }
+	, m_Name{ name }
 	, m_Frames{ frames }
 	, m_Cols{ cols }
 	, m_Rows{ int(ceilf(frames / float(cols))) }
@@ -22,9 +23,10 @@ SpriteComponent::SpriteComponent(dae::GameObject* pParent, const std::string& fi
 {
 }
 
-SpriteComponent::SpriteComponent(dae::GameObject* pParent, const std::string& filePath)
+SpriteComponent::SpriteComponent(dae::GameObject* pParent, const std::string& name, const std::string& filePath)
 	: m_spTexture{ dae::ResourceManager::GetInstance().LoadTexture(filePath) }
 	, m_FrameTime{ 0.f }
+	, m_Name{ name }
 	, m_Frames{ 1 }
 	, m_Cols{ 1 }
 	, m_Rows{ 1 }

@@ -27,7 +27,7 @@ void Box::Initialize(dae::Scene* pScene, const b2Vec2& position, const b2Vec2& s
 	BoxTrigger* pBoxTrigger{ new BoxTrigger(this, position, 1.2f * size) };
 	AddComponent(pBoxTrigger);
 
-	SpriteComponent* pSprite{ new SpriteComponent(this, "Box.png") };
+	SpriteComponent* pSprite{ new SpriteComponent(this, "Idle", "Box.png") };
 	AddComponent(pSprite);
 
 	TagComponent* pTagComponent{ new TagComponent(this, "Box") };

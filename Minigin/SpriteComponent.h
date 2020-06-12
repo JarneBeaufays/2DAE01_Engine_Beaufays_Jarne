@@ -9,12 +9,13 @@ class SpriteComponent : public ObjectComponent
 public:
 
 	// Functions
-	SpriteComponent(dae::GameObject* pParent, const std::string& filePath, float frameTime, int frames, int cols, bool loop);
-	SpriteComponent(dae::GameObject* pParent, const std::string& filePath);
+	SpriteComponent(dae::GameObject* pParent, const std::string& name, const std::string& filePath, float frameTime, int frames, int cols, bool loop);
+	SpriteComponent(dae::GameObject* pParent, const std::string& name, const std::string& filePath);
 	void Update() override;
 	void Render() const override;
 
 	// Getters and Setters
+	const std::string& GetName() const { return m_Name; }
 	float GetWidth() const { return float(m_spTexture->GetTextureWidth() / m_Rows); }
 	float GetHeight() const { return float(m_spTexture->GetTextureHeight() / m_Cols); }
 	
@@ -33,6 +34,7 @@ private:
 
 	// Variables
 	std::shared_ptr<dae::Texture2D> m_spTexture;
+	std::string m_Name;
 	LocalTransform m_LocalTransform;
 
 	float m_FrameTime;
