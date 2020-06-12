@@ -34,3 +34,24 @@ void CollisionManager::AddBox(BoxTrigger* pBox)
 		if (pOther != pBox) m_CollisionDatas.push_back(new CollisionData(pBox, pOther));
 	}
 }
+
+void CollisionManager::DeleteBox(BoxTrigger* pBox)
+{
+	// We want to delete the collision datas with this box
+	for (unsigned int i{}; i < m_CollisionDatas.size(); i++)
+	{
+		if (m_CollisionDatas[i]->GetBoxA() == pBox || m_CollisionDatas[i]->GetBoxB() == pBox)
+		{
+			// We store the one we want to delete in a temp var
+			CollisionData* pTemp{ m_CollisionDatas[i] };
+
+			// We move our back in the open spot and popback
+			m_CollisionDatas[i] = m_CollisionDatas.back();
+			m_CollisionDatas.pop_back();
+
+			// Delete the one that has to go
+			delete pTemp;
+			pTemp = nullptr;
+		}
+	}
+}

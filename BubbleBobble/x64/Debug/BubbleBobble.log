@@ -1,7 +1,24 @@
-﻿  Player.cpp
+﻿  BackgroundImage.cpp
+  Box.cpp
+D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\BubbleBobble\Box.cpp(17,12): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\BubbleBobble\Box.cpp(58,22): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\BubbleBobble\Box.cpp(59,22): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\BubbleBobble\Box.cpp(60,15): warning C4244: '=': conversion from 'const float' to 'int', possible loss of data
+  Game.cpp
+  HighScore.cpp
+  main.cpp
+  Player.cpp
+D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\BubbleBobble\Box.cpp(61,15): warning C4244: '=': conversion from 'const float' to 'int', possible loss of data
 D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\BubbleBobble\Player.cpp(21,12): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
 D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\BubbleBobble\Player.cpp(65,22): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
 D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\BubbleBobble\Player.cpp(66,22): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
 D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\BubbleBobble\Player.cpp(67,15): warning C4244: '=': conversion from 'const float' to 'int', possible loss of data
+  Wall.cpp
 D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\BubbleBobble\Player.cpp(68,15): warning C4244: '=': conversion from 'const float' to 'int', possible loss of data
+D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\BubbleBobble\Wall.cpp(14,12): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\BubbleBobble\Wall.cpp(52,22): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\BubbleBobble\Wall.cpp(53,22): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\BubbleBobble\Wall.cpp(54,15): warning C4244: '=': conversion from 'const float' to 'int', possible loss of data
+  Generating Code...
+D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\BubbleBobble\Wall.cpp(55,15): warning C4244: '=': conversion from 'const float' to 'int', possible loss of data
   BubbleBobble.vcxproj -> D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\x64\Debug\BubbleBobble.exe

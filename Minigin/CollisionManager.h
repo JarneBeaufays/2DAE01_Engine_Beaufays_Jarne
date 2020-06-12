@@ -10,6 +10,7 @@ public:
 	// Functions
 	void Update();
 	void AddBox(BoxTrigger* pBox);
+	void DeleteBox(BoxTrigger* pBox);
 
 	// Getters and Setters
 	std::vector<CollisionData*> GetTriggersEntered() const { return m_TriggersEntered; };
