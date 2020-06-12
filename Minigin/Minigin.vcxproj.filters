@@ -132,6 +132,9 @@
     <ClInclude Include="CollisionManager.h">
       <Filter>Engine\AlphaEngine\Design Patterns</Filter>
     </ClInclude>
+    <ClInclude Include="StateMachineComponent.h">
+      <Filter>Engine\AlphaEngine\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Font.cpp">
@@ -220,6 +223,9 @@
     </ClCompile>
     <ClCompile Include="CollisionManager.cpp">
       <Filter>Engine\AlphaEngine\Design Patterns</Filter>
+    </ClCompile>
+    <ClCompile Include="StateMachineComponent.cpp">
+      <Filter>Engine\AlphaEngine\Components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
