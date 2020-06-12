@@ -6,6 +6,7 @@
 #include "TagComponent.h"
 #include "Texture2D.h"
 #include "ResourceManager.h"
+#include "AudioManager.h"
 #include "Renderer.h"
 #include "BoxCollider.h"
 #include "CollisionManager.h"
@@ -18,30 +19,36 @@ Player::Player(dae::Scene* pScene, b2Vec2 position, b2Vec2 size)
 	// Setting variables
 	GetTransform().SetPosition(position);
 	GetTransform().SetSize(size);
-	float ppm = pScene->GetPPM();
+	float ppm = float(pScene->GetPPM());
 
 	// Adding components	
 	RigidBody2D* pRigidBody{ new RigidBody2D(this) };
-	pRigidBody->Initialize(pScene, size, position, b2BodyType::b2_dynamicBody);
+	pRigidBody->Initialize(pScene, size, position, b2BodyType::b2_dynamicBody, 1.f, 1.f, true);
 	AddComponent(pRigidBody);
 
 	BoxCollider* pBoxCollider{ new BoxCollider(this, 0.0f, 0.0f, size.x, size.y, ppm) };
 	AddComponent(pBoxCollider);
 
-	BoxTrigger* pBoxTrigger{ new BoxTrigger(this, position, size) };
+	BoxTrigger* pBoxTrigger{ new BoxTrigger(this, position, 1.1f * size) };
 	AddComponent(pBoxTrigger);
-
-	// Sprite components
-	InitSprites();
 
 	TagComponent* pTagComponent{ new TagComponent(this, "Player") };
 	AddComponent(pTagComponent);
+
+	// Add Observer
+	AddObserver(static_cast<Observer*>(&AudioManager::GetInstance()));
+
+	// Sprite components
+	InitSprites();
 
 	// State machine component
 	InitStateMachine();
 
 	// Creating controls
 	InitControls();
+
+	// Creating our sounds
+	InitSounds();
 }
 
 void Player::Update()
@@ -62,10 +69,10 @@ void Player::Render() const
 
 		// Creating a box with correct values
 		SDL_Rect box;
-		box.x = position.x - (size.x / 2.0f);
-		box.y = position.y - (size.y / 2.0f);
-		box.w = size.x;
-		box.h = size.y;
+		box.x = int(position.x - (size.x / 2.0f));
+		box.y = int(position.y - (size.y / 2.0f));
+		box.w = int(size.x);
+		box.h = int(size.y);
 
 		// Using SDL to create magenta color and render rect
 		SDL_SetRenderDrawColor(renderer.GetSDLRenderer(), 234, 10, 142, 255);
@@ -124,6 +131,15 @@ void Player::InitStateMachine()
 		} 
 	};
 	pRunningState->AddEntryAction(onEntryRunning);
+
+	std::function<void()> onRunning
+	{
+		[this]()
+		{
+			Notify(this, ObserverEvent::playerStartedRunning);
+		}
+	};
+	pRunningState->AddAction(onRunning);
 
 	// Transition: Idle -> Running
 	Transition* pTranIdleToRun{ new Transition(pRunningState) };
@@ -197,26 +213,70 @@ void Player::InitControls()
 			static_cast<RigidBody2D*>(this->GetComponent("RigidBody2D"))->AddForce(b2Vec2(-20.f, 0.f));
 		}) };
 	dae::InputManager::GetInstance().CreateInputAction("WalkLeft", pWalkLeft, PhysicalButton::ButtonA);
+
+	// Jump
+	Command* pJump{ new Command(
+		// OnPress:
+		[this]()
+		{
+			if (this->m_AllowedToJump) 
+			{
+				std::cout << "IM: On Press -> Player jumped\n";
+				Notify(this, ObserverEvent::playerJumped);
+				static_cast<RigidBody2D*>(this->GetComponent("RigidBody2D"))->AddForce(b2Vec2(0.f, 25.f), true);
+			}
+		},
+
+		// OnRelease:
+		[]() { },
+
+		// OnDown: Move Right
+		[this](){ }
+	) };
+	dae::InputManager::GetInstance().CreateInputAction("Jump", pJump, PhysicalButton::ButtonZ);
+
+}
+
+void Player::InitSounds()
+{
+	// Add a sound to our audio manager
+	AudioManager::GetInstance().AddSoundEffect("Sounds/Walk.wav", SoundEffectType::walk);
+	AudioManager::GetInstance().AddSoundEffect("Sounds/Jump.wav", SoundEffectType::jump);
 }
 
 void Player::OnTriggerEnter()
 {
-	if (false)
+	// Get all the triggers that just started
+	std::vector<CollisionData*> triggersEntered{ CollisionManager::GetInstance().GetTriggersEntered() };
+	for (CollisionData* colData : triggersEntered)
 	{
-		// Get all the triggers that just started
-		std::vector<CollisionData*> triggersEntered{ CollisionManager::GetInstance().GetTriggersEntered() };
-		for (CollisionData* colData : triggersEntered)
+		// Get tags from triggers
+		TagComponent* tagA{ static_cast<TagComponent*>(colData->GetBoxA()->GetParent()->GetComponent("TagComponent")) };
+		TagComponent* tagB{ static_cast<TagComponent*>(colData->GetBoxB()->GetParent()->GetComponent("TagComponent")) };
+		if (tagA && tagB)
 		{
-			// Get tags from triggers
-			TagComponent* tagA{ static_cast<TagComponent*>(colData->GetBoxA()->GetParent()->GetComponent("TagComponent")) };
-			TagComponent* tagB{ static_cast<TagComponent*>(colData->GetBoxB()->GetParent()->GetComponent("TagComponent")) };
-			if (tagA && tagB)
+			// If the tags are not nullptrs
+			if ((tagA->CompareTag("Player") && (tagB->CompareTag("Ground") || tagB->CompareTag("Box"))) || (tagA->CompareTag("Ground") || tagA->CompareTag("Box")) && tagB->CompareTag("Player"))
 			{
-				// If the tags are not nullptrs
-				if ((tagA->CompareTag("Player") && tagB->CompareTag("Box")) || (tagA->CompareTag("Box") && tagB->CompareTag("Player")))
+				// The player triggerd with the ground, so he can jump!
+				// First check what object is the player
+				if (tagA->CompareTag("Player")) 
 				{
-					// The player triggerd with a box
-					std::cout << "Trigger Entered\n";
+					// In here we check if the player's velocity is negative
+					if (static_cast<RigidBody2D*>(colData->GetBoxA()->GetParent()->GetComponent("RigidBody2D"))->GetVelocity().y <= 1) 
+					{
+						// The player is allowed to jump again!
+						m_AllowedToJump = true;
+					}
+				}
+				else if (tagB->CompareTag("Player"))
+				{
+					// In here we check if the player's velocity is negative
+					if (static_cast<RigidBody2D*>(colData->GetBoxA()->GetParent()->GetComponent("RigidBody2D"))->GetVelocity().y <= 1)
+					{
+						// The player is allowed to jump again!
+						m_AllowedToJump = true;
+					}
 				}
 			}
 		}
@@ -252,22 +312,23 @@ void Player::OnTriggerCollision()
 
 void Player::OnTriggerExit()
 {
-	if (false)
+	// Get all the triggers that just started
+	std::vector<CollisionData*> triggersExited{ CollisionManager::GetInstance().GetTriggersExited() };
+	for (CollisionData* colData : triggersExited)
 	{
-		// Get all the triggers that just started
-		std::vector<CollisionData*> triggersExited{ CollisionManager::GetInstance().GetTriggersExited() };
-		for (CollisionData* colData : triggersExited)
+		// Get tags from triggers
+		TagComponent* tagA{ static_cast<TagComponent*>(colData->GetBoxA()->GetParent()->GetComponent("TagComponent")) };
+		TagComponent* tagB{ static_cast<TagComponent*>(colData->GetBoxB()->GetParent()->GetComponent("TagComponent")) };
+		if (tagA && tagB)
 		{
-			// Get tags from triggers
-			TagComponent* tagA{ static_cast<TagComponent*>(colData->GetBoxA()->GetParent()->GetComponent("TagComponent")) };
-			TagComponent* tagB{ static_cast<TagComponent*>(colData->GetBoxB()->GetParent()->GetComponent("TagComponent")) };
-			if (tagA && tagB)
+			// If the tags are not nullptrs
+			if (m_AllowedToJump) 
 			{
-				// If the tags are not nullptrs
-				if ((tagA->CompareTag("Player") && tagB->CompareTag("Box")) || (tagA->CompareTag("Box") && tagB->CompareTag("Player")))
+				// If the player can jump, check if he left the ground
+				if ((tagA->CompareTag("Player") && (tagB->CompareTag("Ground") || tagB->CompareTag("Box"))) || (tagA->CompareTag("Ground") || tagA->CompareTag("Box")) && tagB->CompareTag("Player"))
 				{
-					// The player triggerd with a box
-					std::cout << "Trigger Exited\n";
+					// The player is not allowed to jump anymore!
+					m_AllowedToJump = false;
 				}
 			}
 		}

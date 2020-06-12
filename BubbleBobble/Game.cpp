@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "Wall.h"
+#include "Ground.h"
 #include "BackgroundImage.h"
 #include "Box.h"
 #include "GameObject.h"
@@ -62,14 +63,15 @@ void Game::CreateSceneOne()
 
 	// -- Making the wall objects
 	// Bottom
-	std::shared_ptr<Wall> wall{ std::make_shared<Wall>(&scene, b2Vec2{ 0.f, 0.f }, b2Vec2{ 250.f, 30.f }) };
-	scene.Add(wall);
+	std::shared_ptr<Ground> ground{ std::make_shared<Ground>(&scene, b2Vec2{ 0.f, 0.f }, b2Vec2{ 250.f, 30.f }) };
+	std::shared_ptr<Wall> wall{  };
+	scene.Add(ground);
 
-	wall = std::make_shared<Wall>(&scene, b2Vec2{ 550.f, 0.f }, b2Vec2{ 250.f, 30.f });
-	scene.Add(wall);
+	ground = std::make_shared<Ground>(&scene, b2Vec2{ 550.f, 0.f }, b2Vec2{ 250.f, 30.f });
+	scene.Add(ground);
 
-	wall = std::make_shared<Wall>(&scene, b2Vec2{ 350.f, 0.f }, b2Vec2{ 100.f, 30.f });
-	scene.Add(wall);
+	ground = std::make_shared<Ground>(&scene, b2Vec2{ 350.f, 0.f }, b2Vec2{ 100.f, 30.f });
+	scene.Add(ground);
 
 	// Side
 	wall = std::make_shared<Wall>(&scene, b2Vec2{ 0.f, 0.f }, b2Vec2{ 30.f, 670.f });
@@ -89,40 +91,40 @@ void Game::CreateSceneOne()
 	scene.Add(wall);
 
 	// In Level
-	wall = std::make_shared<Wall>(&scene, b2Vec2{ 30.f, 130.f }, b2Vec2{ 170.f, 30.f });
-	scene.Add(wall);
+	ground = std::make_shared<Ground>(&scene, b2Vec2{ 30.f, 130.f }, b2Vec2{ 170.f, 30.f });
+	scene.Add(ground);
 
-	wall = std::make_shared<Wall>(&scene, b2Vec2{ 250.f, 130.f }, b2Vec2{ 80.f, 30.f });
-	scene.Add(wall);
+	ground = std::make_shared<Ground>(&scene, b2Vec2{ 250.f, 130.f }, b2Vec2{ 80.f, 30.f });
+	scene.Add(ground);
 
-	wall = std::make_shared<Wall>(&scene, b2Vec2{ 600.f, 130.f }, b2Vec2{ 170.f, 30.f });
-	scene.Add(wall);
+	ground = std::make_shared<Ground>(&scene, b2Vec2{ 600.f, 130.f }, b2Vec2{ 170.f, 30.f });
+	scene.Add(ground);
 
-	wall = std::make_shared<Wall>(&scene, b2Vec2{ 470.f, 130.f }, b2Vec2{ 80.f, 30.f });
-	scene.Add(wall);
+	ground = std::make_shared<Ground>(&scene, b2Vec2{ 470.f, 130.f }, b2Vec2{ 80.f, 30.f });
+	scene.Add(ground);
 
 	// Left E
-	wall = std::make_shared<Wall>(&scene, b2Vec2{ 150.f, 500.f }, b2Vec2{ 180.f, 30.f });
-	scene.Add(wall);
+	ground = std::make_shared<Ground>(&scene, b2Vec2{ 150.f, 500.f }, b2Vec2{ 180.f, 30.f });
+	scene.Add(ground);
 
-	wall = std::make_shared<Wall>(&scene, b2Vec2{ 150.f, 375.f }, b2Vec2{ 200.f, 30.f });
-	scene.Add(wall);
+	ground = std::make_shared<Ground>(&scene, b2Vec2{ 150.f, 375.f }, b2Vec2{ 200.f, 30.f });
+	scene.Add(ground);
 
-	wall = std::make_shared<Wall>(&scene, b2Vec2{ 150.f, 250.f }, b2Vec2{ 220.f, 30.f });
-	scene.Add(wall);
+	ground = std::make_shared<Ground>(&scene, b2Vec2{ 150.f, 250.f }, b2Vec2{ 220.f, 30.f });
+	scene.Add(ground);
 
 	wall = std::make_shared<Wall>(&scene, b2Vec2{ 150.f, 250.f }, b2Vec2{ 30.f, 280.f });
 	scene.Add(wall);
 
 	// Right E
-	wall = std::make_shared<Wall>(&scene, b2Vec2{ 470.f, 500.f }, b2Vec2{ 180.f, 30.f });
-	scene.Add(wall);
+	ground = std::make_shared<Ground>(&scene, b2Vec2{ 470.f, 500.f }, b2Vec2{ 180.f, 30.f });
+	scene.Add(ground);
 
-	wall = std::make_shared<Wall>(&scene, b2Vec2{ 450.f, 375.f }, b2Vec2{ 200.f, 30.f });
-	scene.Add(wall);
+	ground = std::make_shared<Ground>(&scene, b2Vec2{ 450.f, 375.f }, b2Vec2{ 200.f, 30.f });
+	scene.Add(ground);
 
-	wall = std::make_shared<Wall>(&scene, b2Vec2{ 430.f, 250.f }, b2Vec2{ 220.f, 30.f });
-	scene.Add(wall);
+	ground = std::make_shared<Ground>(&scene, b2Vec2{ 430.f, 250.f }, b2Vec2{ 220.f, 30.f });
+	scene.Add(ground);
 
 	wall = std::make_shared<Wall>(&scene, b2Vec2{ 620.f, 250.f }, b2Vec2{ 30.f, 280.f });
 	scene.Add(wall);

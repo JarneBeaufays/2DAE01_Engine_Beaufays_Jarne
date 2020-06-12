@@ -28,12 +28,6 @@
     <Filter Include="Engine\AlphaEngine\SceneObjects">
       <UniqueIdentifier>{b9505544-e5e0-4f0b-98a5-92c0981771ba}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\AlphaEngine\Commands">
-      <UniqueIdentifier>{d4d016e9-d0b7-4971-a0cd-4f54f920fc68}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\AlphaEngine\Buttons">
-      <UniqueIdentifier>{c4953cfc-779b-40b8-9510-de1eac9b215d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\AlphaEngine\Design Patterns">
       <UniqueIdentifier>{fbc7e395-53f6-49a9-bdaf-823876f61e6c}</UniqueIdentifier>
     </Filter>
@@ -87,19 +81,7 @@
     <ClInclude Include="Time.h">
       <Filter>Engine\AlphaEngine\Design Patterns</Filter>
     </ClInclude>
-    <ClInclude Include="Command.h">
-      <Filter>Engine\AlphaEngine\Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="Button.h">
-      <Filter>Engine\AlphaEngine\Buttons</Filter>
-    </ClInclude>
     <ClInclude Include="Singleton.h">
-      <Filter>Engine\AlphaEngine\Design Patterns</Filter>
-    </ClInclude>
-    <ClInclude Include="Audio.h">
-      <Filter>Engine\AlphaEngine\Design Patterns</Filter>
-    </ClInclude>
-    <ClInclude Include="AudioService.h">
       <Filter>Engine\AlphaEngine\Design Patterns</Filter>
     </ClInclude>
     <ClInclude Include="ImageComponent.h">
@@ -137,6 +119,21 @@
     </ClInclude>
     <ClInclude Include="AnimatorComponent.h">
       <Filter>Engine\AlphaEngine\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Command.h">
+      <Filter>Engine\AlphaEngine\Other Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Engine\AlphaEngine\Other Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Observer.h">
+      <Filter>Engine\AlphaEngine\Design Patterns</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundEffect.h">
+      <Filter>Engine\AlphaEngine\Other Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioManager.h">
+      <Filter>Engine\AlphaEngine\Other Classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -182,19 +179,7 @@
     <ClCompile Include="Time.cpp">
       <Filter>Engine\AlphaEngine\Design Patterns</Filter>
     </ClCompile>
-    <ClCompile Include="Command.cpp">
-      <Filter>Engine\AlphaEngine\Commands</Filter>
-    </ClCompile>
-    <ClCompile Include="Button.cpp">
-      <Filter>Engine\AlphaEngine\Buttons</Filter>
-    </ClCompile>
     <ClCompile Include="Singleton.cpp">
-      <Filter>Engine\AlphaEngine\Design Patterns</Filter>
-    </ClCompile>
-    <ClCompile Include="Audio.cpp">
-      <Filter>Engine\AlphaEngine\Design Patterns</Filter>
-    </ClCompile>
-    <ClCompile Include="AudioService.cpp">
       <Filter>Engine\AlphaEngine\Design Patterns</Filter>
     </ClCompile>
     <ClCompile Include="ImageComponent.cpp">
@@ -232,6 +217,21 @@
     </ClCompile>
     <ClCompile Include="AnimatorComponent.cpp">
       <Filter>Engine\AlphaEngine\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Command.cpp">
+      <Filter>Engine\AlphaEngine\Other Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Engine\AlphaEngine\Other Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Observer.cpp">
+      <Filter>Engine\AlphaEngine\Design Patterns</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioManager.cpp">
+      <Filter>Engine\AlphaEngine\Other Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundEffect.cpp">
+      <Filter>Engine\AlphaEngine\Other Classes</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

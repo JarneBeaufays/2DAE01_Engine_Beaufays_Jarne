@@ -23,7 +23,7 @@ public:
 	void SetOffset(float x, float y) { SetOffset(b2Vec2(x, y)); }
 	void SetSize(b2Vec2 size) { m_LocalTransform.SetSize(size); }
 	void SetSize(float x, float y) { SetSize(b2Vec2(x, y)); }
-
+	void SetStartAndEndFram(int start, int end) { m_StartFrame = start; m_EndFrame = end; }
 	void SetFlipped(bool value) { m_Flipped = value; }
 	void Flip() { m_Flipped = !m_Flipped; }
 
@@ -43,6 +43,8 @@ private:
 	int m_Frames;
 	int m_Cols;
 	int m_Rows;
+	int m_StartFrame;
+	int m_EndFrame;
 	bool m_Loop;
 	bool m_UsesCustomSize;
 	bool m_Animated;

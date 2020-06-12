@@ -1,5 +1,6 @@
 #pragma once
 #include "Singleton.h"
+#include "SceneObject.h"
 #include <string>
 #include <memory>
 #include <vector>
@@ -16,6 +17,7 @@ namespace dae
 		void Update();
 		void Render();
 		bool NextScene();
+		void InstantiateObject(std::shared_ptr<dae::SceneObject> spObject);
 
 		// Getters and Setters
 		std::shared_ptr<Scene> GetCurrentScene() { return m_spScenes[m_ActiveSceneID]; }

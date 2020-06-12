@@ -1,36 +1,8 @@
-﻿  MiniginPCH.cpp
-  AnimatorComponent.cpp
-  Audio.cpp
-  AudioService.cpp
+﻿  AnimatorComponent.cpp
   BoxCollider.cpp
-  BoxTrigger.cpp
-  Button.cpp
-  CollisionData.cpp
-  CollisionManager.cpp
-  Command.cpp
-  Font.cpp
-  GameObject.cpp
   ImageComponent.cpp
-  InputManager.cpp
-  LocalTransform.cpp
-  Minigin.cpp
-  ObjectComponent.cpp
-  Renderer.cpp
-  ResourceManager.cpp
   RigidBody2D.cpp
-  Scene.cpp
-  Generating Code...
-  Compiling...
-  SceneManager.cpp
-  Singleton.cpp
   SpriteComponent.cpp
-  StateMachineComponent.cpp
-  TagComponent.cpp
-  TextComponent.cpp
-  TextObject.cpp
-  Texture2D.cpp
-  Time.cpp
-  Transform.cpp
   Generating Code...
   Minigin.vcxproj -> D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\x64\Debug\Minigin.lib
   D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\3rdParty\SDL2\lib\x64\SDL2.dll
@@ -45,3 +17,13 @@
   D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\3rdParty\SDL2_ttf\lib\x64\libfreetype-6.dll
   D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\3rdParty\SDL2_ttf\lib\x64\SDL2_ttf.dll
   2 File(s) copied
+  D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\3rdParty\SDL2_mixer\lib\x64\libFLAC-8.dll
+  D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\3rdParty\SDL2_mixer\lib\x64\libmodplug-1.dll
+  D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\3rdParty\SDL2_mixer\lib\x64\libmpg123-0.dll
+  D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\3rdParty\SDL2_mixer\lib\x64\libogg-0.dll
+  D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\3rdParty\SDL2_mixer\lib\x64\libopus-0.dll
+  D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\3rdParty\SDL2_mixer\lib\x64\libopusfile-0.dll
+  D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\3rdParty\SDL2_mixer\lib\x64\libvorbis-0.dll
+  D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\3rdParty\SDL2_mixer\lib\x64\libvorbisfile-3.dll
+  D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\3rdParty\SDL2_mixer\lib\x64\SDL2_mixer.dll
+  9 File(s) copied

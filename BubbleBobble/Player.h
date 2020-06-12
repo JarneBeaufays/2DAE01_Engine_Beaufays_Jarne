@@ -1,8 +1,9 @@
 #pragma once
 #include "GameObject.h"
 #include "Box2D.h"
+#include "Observer.h"
 
-class Player : public dae::GameObject
+class Player : public dae::GameObject, public Subject
 {
 public:
 
@@ -21,5 +22,8 @@ private:
 	void InitSprites();
 	void InitStateMachine();
 	void InitControls();
+	void InitSounds();
+
+	bool m_AllowedToJump = false;
 
 };

@@ -14,7 +14,7 @@ void Box::Initialize(dae::Scene* pScene, const b2Vec2& position, const b2Vec2& s
 	// Setting variables
 	GetTransform().SetPosition(position);
 	GetTransform().SetSize(size);
-	float ppm = pScene->GetPPM();
+	float ppm = float(pScene->GetPPM());
 
 	// Adding components	
 	RigidBody2D* pRigidBody{ new RigidBody2D(this) };
@@ -55,10 +55,10 @@ void Box::Render() const
 
 		// Creating a box with correct values
 		SDL_Rect box;
-		box.x = position.x - (size.x / 2.0f);
-		box.y = position.y - (size.y / 2.0f);
-		box.w = size.x;
-		box.h = size.y;
+		box.x = int(position.x - (size.x / 2.0f));
+		box.y = int(position.y - (size.y / 2.0f));
+		box.w = int(size.x);
+		box.h = int(size.y);
 
 		// Using SDL to create magenta color and render rect
 		SDL_SetRenderDrawColor(renderer.GetSDLRenderer(), 234, 10, 142, 255);

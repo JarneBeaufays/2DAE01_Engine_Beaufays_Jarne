@@ -42,6 +42,9 @@
     <ClCompile Include="HighScore.cpp">
       <Filter>Game\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="Ground.cpp">
+      <Filter>Game\GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -63,6 +66,9 @@
       <Filter>Game\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="HighScore.h">
+      <Filter>Game\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Ground.h">
       <Filter>Game\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>

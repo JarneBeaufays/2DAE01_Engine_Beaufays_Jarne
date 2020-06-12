@@ -19,6 +19,8 @@ SpriteComponent::SpriteComponent(dae::GameObject* pParent, const std::string& na
 	, m_UsesCustomSize{ false }
 	, m_Animated{ true }
 	, m_Flipped{ false }
+	, m_StartFrame{ 0 }
+	, m_EndFrame{ frames }
 	, ObjectComponent("SpriteComponent", pParent)
 {
 }
@@ -60,6 +62,9 @@ void SpriteComponent::Update()
 
 	// Check if we want to reset our frames
 	if (m_CurrentFrame >= m_Frames) m_CurrentFrame = 0;
+
+	// Make sure we only render the frames we want
+	m_CurrentFrame %= (m_EndFrame - m_StartFrame);
 }
 
 void SpriteComponent::Render() const

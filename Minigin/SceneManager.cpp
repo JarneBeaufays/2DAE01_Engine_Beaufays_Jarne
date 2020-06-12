@@ -37,6 +37,11 @@ bool dae::SceneManager::NextScene()
 	return false;
 }
 
+void dae::SceneManager::InstantiateObject(std::shared_ptr<dae::SceneObject> spObject)
+{
+	GetCurrentScene()->Add(spObject);
+}
+
 bool dae::SceneManager::SetActiveScene(const std::string& name)
 {
 	// Go over all the scenes and compare the names

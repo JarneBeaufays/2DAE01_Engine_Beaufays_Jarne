@@ -6,6 +6,7 @@
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
+#include "AudioManager.h"
 #include "CollisionManager.h"
 #include <SDL.h>
 #include "TextObject.h"
@@ -40,6 +41,7 @@ void dae::Minigin::Initialize(unsigned int width, unsigned int height)
 
 	// Tell the resource manager where he can find the game data
 	ResourceManager::GetInstance().Init("../Data/");
+	AudioManager::GetInstance().Init("../Data/");
 }
 
 void dae::Minigin::Cleanup()

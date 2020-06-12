@@ -13,7 +13,7 @@ RigidBody2D::RigidBody2D(dae::GameObject* pParent)
 {
 }
 
-void RigidBody2D::Initialize(dae::Scene* pScene, const b2Vec2& size, const b2Vec2& position, b2BodyType type, float density, float friction)
+void RigidBody2D::Initialize(dae::Scene* pScene, const b2Vec2& size, const b2Vec2& position, b2BodyType type, float density, float friction, bool disableRot)
 {
 	// We need the pixel per meter for more realistic physics scaling
 	m_PPM = pScene->GetPPM();
@@ -26,8 +26,8 @@ void RigidBody2D::Initialize(dae::Scene* pScene, const b2Vec2& size, const b2Vec
 	// Creating our body object
 	m_pBody = pScene->CreateBody(&bodyDef);
 	
-	// Setting our custom data to a this* so that we can get this object for trigger events
-	m_pBody->SetUserData(this);
+	// Making sure our Rb doesn't rotate user wants
+	m_pBody->SetFixedRotation(disableRot);
 
 	// Checking if this is a static object
 	if (type != b2BodyType::b2_staticBody) 
@@ -104,12 +104,15 @@ bool RigidBody2D::AddCollider(ObjectComponent* pCollider)
 	return true;
 }
 
-void RigidBody2D::AddForce(b2Vec2 force) 
+void RigidBody2D::AddForce(b2Vec2 force, bool pulse)
 {
 	// Multiplying delta time
-	float deltaTime{ Time::GetInstance().GetDeltaTime() };
-	force.x *= deltaTime;
-	force.y *= deltaTime;
+	if (!pulse)
+	{
+		float deltaTime{ Time::GetInstance().GetDeltaTime() };
+		force.x *= deltaTime;
+		force.y *= deltaTime;
+	}
 
 	// Adding force
 	m_pBody->ApplyLinearImpulse(force, m_pBody->GetWorldCenter(), true);

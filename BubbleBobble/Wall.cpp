@@ -1,17 +1,18 @@
 #include "Wall.h"
 #include "RigidBody2D.h"
+#include "BoxTrigger.h"
 #include "TagComponent.h"
 #include "SDL.h"
 #include "Renderer.h"
 #include "BoxCollider.h"
 #include "SpriteComponent.h"
 
-Wall::Wall(dae::Scene* pScene, b2Vec2 position, b2Vec2 size)
+Wall::Wall(dae::Scene* pScene, const b2Vec2& position, const b2Vec2& size)
 {
 	// Setting variables
 	GetTransform().SetPosition(position);
 	GetTransform().SetSize(size);
-	float ppm = pScene->GetPPM();
+	float ppm = float(pScene->GetPPM());
 
 	// Adding components
 	SpriteComponent* pSprite{ new SpriteComponent(this, "Idle", "BBSprites/wall.png") };
@@ -19,6 +20,9 @@ Wall::Wall(dae::Scene* pScene, b2Vec2 position, b2Vec2 size)
 
 	BoxCollider* pBoxCollider{ new BoxCollider(this, 0.0f, 0.0f, size.x, size.y, ppm) };
 	AddComponent(pBoxCollider);
+
+	BoxTrigger* pBoxTrigger{ new BoxTrigger(this, position, 1.1f * size) };
+	AddComponent(pBoxTrigger);
 
 	RigidBody2D* pRigidBody{ new RigidBody2D(this) };
 	pRigidBody->Initialize(pScene, size, position, b2_staticBody);
@@ -49,10 +53,10 @@ void Wall::Render() const
 
 		// Creating a box with correct values
 		SDL_Rect box;
-		box.x = position.x - (size.x / 2.0f);
-		box.y = position.y - (size.y / 2.0f);
-		box.w = size.x;
-		box.h = size.y;
+		box.x = int(position.x - (size.x / 2.0f));
+		box.y = int(position.y - (size.y / 2.0f));
+		box.w = int(size.x);
+		box.h = int(size.y);
 
 		// Using SDL to create magenta color and render rect
 		SDL_SetRenderDrawColor(renderer.GetSDLRenderer(), 234, 10, 142, 255);
