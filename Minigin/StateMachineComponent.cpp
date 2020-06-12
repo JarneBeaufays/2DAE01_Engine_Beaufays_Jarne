@@ -1,2 +1,59 @@
 #include "MiniginPCH.h"
 #include "StateMachineComponent.h"
+
+bool Transition::Update()
+{
+	// Here we want to go over all of our conditions
+	for (std::function<bool()>& function : m_Conditions)
+	{
+		// If our condition returns false, we return false too
+		if (!function()) return false;
+	}
+
+	// Executing our exit actions
+	for (std::function<void()>& function : m_ExitActions) function();
+
+	// Returning our state
+	return true;
+}
+
+State* State::Update()
+{
+	// Check if this is the first time we enter this state
+	if (!m_Entered) 
+	{
+		// Loop over the entry functions
+		for (std::function<void()>& function : m_EntryActions) function();
+
+		// Setting some variables
+		m_Entered = true;
+	}
+
+	// Here we want to go over all of our transitions and see if we have to follow them
+	for (Transition* pTransition : m_Transitions) 
+	{
+		if (pTransition->Update()) 
+		{
+			// First change up some vars
+			m_Entered = false;
+
+			// Loop over our exit functions
+			for (std::function<void()>& function : m_ExitActions) function();
+
+			// We want to make a transition to another state!
+			return pTransition->GetTargetState();
+		}
+	}
+
+	// Loop over our action functions before returning
+	for (std::function<void()>& function : m_Actions) function();
+
+	// We want to stay in this state
+	return this;
+}
+
+void StateMachineComponent::Update()
+{
+	// Update our currentState
+	m_pCurrentState = m_pCurrentState->Update();
+}
