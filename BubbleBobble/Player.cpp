@@ -50,7 +50,7 @@ Player::Player(dae::Scene* pScene, b2Vec2 position, b2Vec2 size)
 		// OnDown: Move Right
 		[pRigidBody]() { pRigidBody->AddForce(b2Vec2(20.f, 0.f)); }
 	)};
-	dae::InputManager::GetInstance().CreateButton(pWalkRight, PhysicalButton::ButtonA);
+	dae::InputManager::GetInstance().CreateInputAction("WalkRight", pWalkRight, PhysicalButton::ButtonA);
 }
 
 void Player::Update()
@@ -113,13 +113,13 @@ void Player::InitStateMachine()
 
 	// Adding a transition from idle to running
 	Transition* pTranIdleToRun{ new Transition(pRunningState) };
-	std::function<bool()> runningCondition{ []() { return dae::InputManager::GetInstance().IsPressed(PhysicalButton::ButtonA); } };
+	std::function<bool()> runningCondition{ []() { return dae::InputManager::GetInstance().InputActionPressed("WalkRight"); } };
 	pTranIdleToRun->AddCondition(runningCondition);
 	pIdleState->AddTransition(pTranIdleToRun);
 
 	// Adding a transition from running to idle
 	Transition* pTranRunningToIdle{ new Transition(pIdleState) };
-	std::function<bool()> idleCondition{ []() { return !dae::InputManager::GetInstance().IsPressed(PhysicalButton::ButtonA); } };
+	std::function<bool()> idleCondition{ []() { return !dae::InputManager::GetInstance().InputActionPressed("WalkRight"); } };
 	pTranRunningToIdle->AddCondition(idleCondition);
 	std::function<void()> exitAction{ []() { std::cout << "SM: Exit -> Stopped running\n"; } };
 	pTranRunningToIdle->AddExitAction(exitAction);
@@ -132,7 +132,7 @@ void Player::InitStateMachine()
 
 void Player::OnTriggerEnter()
 {
-	if (true)
+	if (false)
 	{
 		// Get all the triggers that just started
 		std::vector<CollisionData*> triggersEntered{ CollisionManager::GetInstance().GetTriggersEntered() };
@@ -183,7 +183,7 @@ void Player::OnTriggerCollision()
 
 void Player::OnTriggerExit()
 {
-	if (true)
+	if (false)
 	{
 		// Get all the triggers that just started
 		std::vector<CollisionData*> triggersExited{ CollisionManager::GetInstance().GetTriggersExited() };

@@ -22,17 +22,18 @@ enum class PhysicalButton
 	ButtonE, ButtonR
 };
 
-class Button
+class InputAction
 {
 public:
 
 	// Functions
-	Button(Command* pCommand, PhysicalButton physicalButton) : m_pCommand{ pCommand }, m_PhysicalButton{ physicalButton }, m_ButtonState{ ButtonState::idle } { };
-	~Button() { delete m_pCommand; m_pCommand = nullptr; };
+	InputAction(const std::string& actionName, Command* pCommand, PhysicalButton physicalButton) : m_ActionName{ actionName }, m_pCommand { pCommand }, m_PhysicalButton{ physicalButton }, m_ButtonState{ ButtonState::idle } { };
+	~InputAction() { delete m_pCommand; m_pCommand = nullptr; };
 	void ButtonDown(bool value);
 	void ExecuteCommand();
 
 	// Getters and Setters
+	const std::string& GetActionName() const { return m_ActionName; }
 	Command* GetCommand() const { return m_pCommand; }
 	PhysicalButton GetPhysicalButton() { return m_PhysicalButton; }
 	ButtonState GetState() { return m_ButtonState; }
@@ -41,6 +42,7 @@ public:
 private:
 
 	// Variables
+	std::string m_ActionName;
 	Command* m_pCommand;
 	ButtonState m_ButtonState;
 	PhysicalButton m_PhysicalButton;

@@ -1,7 +1,7 @@
 #include "MiniginPCH.h"
 #include "Button.h"
 
-void Button::ButtonDown(bool value)
+void InputAction::ButtonDown(bool value)
 {
 	// Check in what state we are and update accordingly
 	switch (m_ButtonState)
@@ -24,7 +24,7 @@ void Button::ButtonDown(bool value)
 	}
 }
 
-void Button::ExecuteCommand()
+void InputAction::ExecuteCommand()
 {
 	// Executing the correct action
 	switch (m_ButtonState)

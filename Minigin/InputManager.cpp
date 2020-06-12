@@ -5,11 +5,29 @@
 dae::InputManager::~InputManager()
 {
 	// Deleting our buttons
-	for (Button* pButton : m_Buttons) 
+	for (InputAction* pButton : m_InputActions) 
 	{
 		delete pButton;
 		pButton = nullptr;
 	}
+}
+
+bool dae::InputManager::InputActionPressed(const std::string& inputAction)
+{
+	// Check if we have pressed this action's button
+	return IsPressed(GetInputAction(inputAction)->GetPhysicalButton());
+}
+
+InputAction* dae::InputManager::GetInputAction(const std::string& inputAction)
+{
+	// Return the corresponding input action
+	for (InputAction* pInputAction : m_InputActions) 
+	{
+		if (pInputAction->GetActionName() == inputAction) return pInputAction;
+	}
+
+	// No actions found with the given name
+	return nullptr;
 }
 
 bool dae::InputManager::ProcessInput()
@@ -61,7 +79,7 @@ bool dae::InputManager::IsPressed(PhysicalButton button) const
 void dae::InputManager::HandleControllerInput() const
 {
 	// Check if our button is pressed
-	for (Button* pButton : m_Buttons) 
+	for (InputAction* pButton : m_InputActions) 
 	{
 		// See if we used the key
 		bool buttonDown{ IsPressed(pButton->GetPhysicalButton()) };
@@ -70,7 +88,7 @@ void dae::InputManager::HandleControllerInput() const
 	}
 
 	// Executing our commands
-	for (Button* pButton : m_Buttons)
+	for (InputAction* pButton : m_InputActions)
 	{
 		// Check in what state we are and execute accordingly
 		pButton->ExecuteCommand();

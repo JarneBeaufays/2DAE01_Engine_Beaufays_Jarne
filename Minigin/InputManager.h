@@ -11,17 +11,19 @@ namespace dae
 
 		// Functions
 		~InputManager();
+		bool InputActionPressed(const std::string& inputAction);
 		bool ProcessInput();
-		bool IsPressed(PhysicalButton button) const;
-		void CreateButton(Command* pCommand, PhysicalButton physicalButton) { m_Buttons.push_back(new Button(pCommand, physicalButton)); }
+		void CreateInputAction(const std::string& actionName, Command* pCommand, PhysicalButton physicalButton) { m_InputActions.push_back(new InputAction(actionName, pCommand, physicalButton)); }
 
 	private:
 
 		// Private functions
+		InputAction* GetInputAction(const std::string& inputAction);
+		bool IsPressed(PhysicalButton button) const;
 		void HandleControllerInput() const;
 
 		// Variables
-		std::vector<Button*> m_Buttons;
+		std::vector<InputAction*> m_InputActions;
 		XINPUT_STATE m_CurrentState;
 	
 	};
