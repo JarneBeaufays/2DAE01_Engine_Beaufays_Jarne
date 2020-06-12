@@ -17,4 +17,8 @@ public:
 
 private:
 
+	// Private functions
+	void InitSprites();
+	void InitStateMachine();
+
 };
