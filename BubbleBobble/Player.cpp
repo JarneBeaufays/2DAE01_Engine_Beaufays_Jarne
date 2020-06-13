@@ -100,15 +100,24 @@ void Player::InitSprites()
 	SpriteComponent* pCheffRun{ new SpriteComponent(this, "Run", "Sprites/Cheff_Run.png", 0.05f, 16, 4, true) };
 	pCheffRun->SetSize(2.f, 1.2f);
 
+	SpriteComponent* pCheffJump{ new SpriteComponent(this, "Jump", "Sprites/Cheff_Jump.png", 0.05f, 4, 4, true) };
+	pCheffJump->SetSize(2.f, 1.2f);
+
+	SpriteComponent* pCheffLand{ new SpriteComponent(this, "Fall", "Sprites/Cheff_Fall.png") };
+	pCheffLand->SetSize(2.f, 1.2f);
+
 	AnimatorComponent* pAnimator{ new AnimatorComponent(this) };
 	pAnimator->AddSprite(pCheffIdle);
 	pAnimator->AddSprite(pCheffRun);
+	pAnimator->AddSprite(pCheffJump);
+	pAnimator->AddSprite(pCheffLand);
 	AddComponent(pAnimator);
 }
 
 void Player::InitStateMachine()
 {
-	// ----- STATE MACHINE ----- //
+	// ----- STATE MACHINE ----- STATE MACHINE ----- STATE MACHINE ----- //
+	// ----- STATES ----- //
 	// Idle State
 	State* pIdleState{ new State("Idle") };
 	std::function<void()> onEntryIdle
@@ -141,6 +150,41 @@ void Player::InitStateMachine()
 	};
 	pRunningState->AddAction(onRunning);
 
+	// Jumping state
+	State* pJumpState{ new State("Jump") };
+	std::function<void()> onEntryJump
+	{
+		[this]()
+		{
+			static_cast<RigidBody2D*>(GetComponent("RigidBody2D"))->SetCollisionGroup(CollisionGroup::colGroup5);
+			static_cast<AnimatorComponent*>(this->GetComponent("AnimatorComponent"))->SetActiveSprite("Jump");
+		}
+	};
+	pJumpState->AddEntryAction(onEntryJump);
+
+	// Falling state
+	State* pFallingState{ new State("Falling") };
+	std::function<void()> onEntryFall
+	{
+		[this]()
+		{
+			static_cast<AnimatorComponent*>(this->GetComponent("AnimatorComponent"))->SetActiveSprite("Fall");
+		}
+	};
+	std::function<void()> onExitFall
+	{
+		[this]()
+		{
+			static_cast<RigidBody2D*>(GetComponent("RigidBody2D"))->SetCollisionGroup(CollisionGroup::colGroup1);
+		}
+	};
+	pFallingState->AddEntryAction(onEntryFall);
+	pFallingState->AddExitAction(onExitFall);
+	// ---
+
+
+
+	// ----- TRANSITIONS ----- //
 	// Transition: Idle -> Running
 	Transition* pTranIdleToRun{ new Transition(pRunningState) };
 	std::function<bool()> runningCondition
@@ -153,6 +197,64 @@ void Player::InitStateMachine()
 	pTranIdleToRun->AddCondition(runningCondition);
 	pIdleState->AddTransition(pTranIdleToRun);
 
+	// Transition: Idle -> Jumping
+	Transition* pTranIdleToJump{ new Transition(pJumpState) };
+	std::function<bool()> jumpingCondition
+	{
+		[]()
+		{
+			return dae::InputManager::GetInstance().InputActionPressed("Jump");
+		}
+	};
+	pTranIdleToJump->AddCondition(jumpingCondition);
+	pIdleState->AddTransition(pTranIdleToJump);
+
+	// Transition: Running -> Jumping
+	Transition* pTranRunToJump{ new Transition(pJumpState) };
+	pTranRunToJump->AddCondition(jumpingCondition);
+	pRunningState->AddTransition(pTranRunToJump);
+
+	// Transition: Jumping -> Falling
+	Transition* pTranJumpToFall{ new Transition(pFallingState) };
+	std::function<bool()> fallingCondition
+	{
+		[this]()
+		{
+			return static_cast<RigidBody2D*>(GetComponent("RigidBody2D"))->GetVelocity().y < 0;
+		}
+	};
+	pTranJumpToFall->AddCondition(fallingCondition);
+	pJumpState->AddTransition(pTranJumpToFall);
+
+	// Transition: Falling -> Idle
+	Transition* pTranFallToIdle{ new Transition(pIdleState) };
+	std::function<bool()> landingCondition
+	{
+		[this]()
+		{
+			return m_AllowedToJump;
+		}
+	};
+	pTranFallToIdle->AddCondition(landingCondition);
+	pFallingState->AddTransition(pTranFallToIdle);
+
+	// Transition: Idle -> Falling
+	Transition* pTranIdleToFall{ new Transition(pFallingState) };
+	std::function<bool()> fallingCondition2
+	{
+		[this]()
+		{
+			return !m_AllowedToJump;
+		}
+	};
+	pTranIdleToFall->AddCondition(fallingCondition2);
+	pIdleState->AddTransition(pTranIdleToFall);
+
+	// Transition: Running -> Falling
+	Transition* pTranRunningToFall{ new Transition(pFallingState) };
+	pTranRunningToFall->AddCondition(fallingCondition2);
+	pRunningState->AddTransition(pTranRunningToFall);
+
 	// Transition: Running -> Idle
 	Transition* pTranRunningToIdle{ new Transition(pIdleState) };
 	std::function<bool()> idleCondition
@@ -164,6 +266,9 @@ void Player::InitStateMachine()
 	};
 	pTranRunningToIdle->AddCondition(idleCondition);
 	pRunningState->AddTransition(pTranRunningToIdle);
+	// ---
+
+
 
 	// Now we create the component and give our starting state to it
 	StateMachineComponent* pStateMachine{ new StateMachineComponent(this, pIdleState) };
@@ -255,26 +360,21 @@ void Player::OnTriggerEnter()
 		TagComponent* tagB{ static_cast<TagComponent*>(colData->GetBoxB()->GetParent()->GetComponent("TagComponent")) };
 		if (tagA && tagB)
 		{
-			// If the tags are not nullptrs
-			if ((tagA->CompareTag("Player") && (tagB->CompareTag("Ground") || tagB->CompareTag("Box"))) || (tagA->CompareTag("Ground") || tagA->CompareTag("Box")) && tagB->CompareTag("Player"))
+			if (tagA->CompareTag("Player") || tagB->CompareTag("Player")) 
 			{
-				// The player triggerd with the ground, so he can jump!
-				// First check what object is the player
-				if (tagA->CompareTag("Player")) 
+				if (tagA->CompareTag("Ground") || tagB->CompareTag("Ground")) 
 				{
-					// In here we check if the player's velocity is negative
-					if (static_cast<RigidBody2D*>(colData->GetBoxA()->GetParent()->GetComponent("RigidBody2D"))->GetVelocity().y <= 1) 
+					// Getting our base GameObjects
+					GameObject* pPlayer;
+					GameObject* pGround;
+
+					if (tagA->CompareTag("Player")) { pPlayer = colData->GetBoxA()->GetParent(); pGround = colData->GetBoxB()->GetParent(); }
+					else { pPlayer = colData->GetBoxB()->GetParent(); pGround = colData->GetBoxA()->GetParent(); }
+
+					// Checking if the ground is below us
+					if (pGround->GetTransform().GetPosition().y > pPlayer->GetTransform().GetPosition().y)
 					{
-						// The player is allowed to jump again!
-						m_AllowedToJump = true;
-					}
-				}
-				else if (tagB->CompareTag("Player"))
-				{
-					// In here we check if the player's velocity is negative
-					if (static_cast<RigidBody2D*>(colData->GetBoxA()->GetParent()->GetComponent("RigidBody2D"))->GetVelocity().y <= 1)
-					{
-						// The player is allowed to jump again!
+						// Now that we know the ground is below us, we know we are landing on it
 						m_AllowedToJump = true;
 					}
 				}
@@ -324,11 +424,24 @@ void Player::OnTriggerExit()
 			// If the tags are not nullptrs
 			if (m_AllowedToJump) 
 			{
-				// If the player can jump, check if he left the ground
-				if ((tagA->CompareTag("Player") && (tagB->CompareTag("Ground") || tagB->CompareTag("Box"))) || (tagA->CompareTag("Ground") || tagA->CompareTag("Box")) && tagB->CompareTag("Player"))
+				if (tagA->CompareTag("Player") || tagB->CompareTag("Player"))
 				{
-					// The player is not allowed to jump anymore!
-					m_AllowedToJump = false;
+					if (tagA->CompareTag("Ground") || tagB->CompareTag("Ground"))
+					{
+						// Getting our base GameObjects
+						GameObject* pPlayer;
+						GameObject* pGround;
+
+						if (tagA->CompareTag("Player")) { pPlayer = colData->GetBoxA()->GetParent(); pGround = colData->GetBoxB()->GetParent(); }
+						else { pPlayer = colData->GetBoxB()->GetParent(); pGround = colData->GetBoxA()->GetParent(); }
+
+						// Checking if the ground is below us
+						if (pGround->GetTransform().GetPosition().y > pPlayer->GetTransform().GetPosition().y)
+						{
+							// Now that we know the ground is below us, we know we are jumping
+							m_AllowedToJump = false;
+						}
+					}
 				}
 			}
 		}

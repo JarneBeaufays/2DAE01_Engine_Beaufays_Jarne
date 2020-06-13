@@ -7,7 +7,7 @@
 #include "BoxCollider.h"
 #include "SpriteComponent.h"
 
-Wall::Wall(dae::Scene* pScene, const b2Vec2& position, const b2Vec2& size)
+Wall::Wall(dae::Scene* pScene, const b2Vec2& position, const b2Vec2& size, bool ignoreColPlayerJump)
 {
 	// Setting variables
 	GetTransform().SetPosition(position);
@@ -26,6 +26,7 @@ Wall::Wall(dae::Scene* pScene, const b2Vec2& position, const b2Vec2& size)
 
 	RigidBody2D* pRigidBody{ new RigidBody2D(this) };
 	pRigidBody->Initialize(pScene, size, position, b2_staticBody);
+	if(!ignoreColPlayerJump) pRigidBody->SetCollisionIgnoreGroup(CollisionGroup::colGroup8);
 	AddComponent(pRigidBody);
 
 	TagComponent* pTagComponent{ new TagComponent(this, "Wall") };

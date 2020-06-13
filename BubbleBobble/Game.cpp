@@ -113,7 +113,7 @@ void Game::CreateSceneOne()
 	ground = std::make_shared<Ground>(&scene, b2Vec2{ 150.f, 250.f }, b2Vec2{ 220.f, 30.f });
 	scene.Add(ground);
 
-	wall = std::make_shared<Wall>(&scene, b2Vec2{ 150.f, 250.f }, b2Vec2{ 30.f, 280.f });
+	wall = std::make_shared<Wall>(&scene, b2Vec2{ 150.f, 250.f }, b2Vec2{ 30.f, 280.f }, true);
 	scene.Add(wall);
 
 	// Right E
@@ -126,7 +126,7 @@ void Game::CreateSceneOne()
 	ground = std::make_shared<Ground>(&scene, b2Vec2{ 430.f, 250.f }, b2Vec2{ 220.f, 30.f });
 	scene.Add(ground);
 
-	wall = std::make_shared<Wall>(&scene, b2Vec2{ 620.f, 250.f }, b2Vec2{ 30.f, 280.f });
+	wall = std::make_shared<Wall>(&scene, b2Vec2{ 620.f, 250.f }, b2Vec2{ 30.f, 280.f }, true);
 	scene.Add(wall);
 
 	// Player

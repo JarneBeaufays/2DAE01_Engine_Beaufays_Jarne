@@ -18,8 +18,8 @@ Ground::Ground(dae::Scene* pScene, const b2Vec2& position, const b2Vec2& size)
 	BoxCollider* pBoxCollider{ new BoxCollider(this, 0.0f, 0.0f, size.x, size.y, ppm) };
 	AddComponent(pBoxCollider);
 
-	// BoxTrigger* pBoxTrigger{ new BoxTrigger(this, position, size) };
-	// AddComponent(pBoxTrigger);
+	BoxTrigger* pBoxTrigger{ new BoxTrigger(this, position, b2Vec2(size.x, size.y)) };
+	AddComponent(pBoxTrigger);
 
 	RigidBody2D* pRigidBody{ new RigidBody2D(this) };
 	pRigidBody->Initialize(pScene, size, position, b2_staticBody);

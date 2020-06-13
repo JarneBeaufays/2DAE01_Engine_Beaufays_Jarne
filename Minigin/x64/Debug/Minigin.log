@@ -1,9 +1,4 @@
-﻿  AnimatorComponent.cpp
-  BoxCollider.cpp
-  ImageComponent.cpp
-  RigidBody2D.cpp
-  SpriteComponent.cpp
-  Generating Code...
+﻿  RigidBody2D.cpp
   Minigin.vcxproj -> D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\x64\Debug\Minigin.lib
   D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\3rdParty\SDL2\lib\x64\SDL2.dll
   1 File(s) copied
