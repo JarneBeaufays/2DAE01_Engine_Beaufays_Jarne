@@ -18,7 +18,8 @@ public:
 	const std::string& GetName() const { return m_Name; }
 	float GetWidth() const { return float(m_spTexture->GetTextureWidth() / m_Rows); }
 	float GetHeight() const { return float(m_spTexture->GetTextureHeight() / m_Cols); }
-	
+	bool GetFlipped() const { return m_Flipped; }
+
 	void SetOffset(b2Vec2 offset) { m_LocalTransform.SetPosition(offset); }
 	void SetOffset(float x, float y) { SetOffset(b2Vec2(x, y)); }
 	void SetSize(b2Vec2 size) { m_LocalTransform.SetSize(size); }

@@ -6,6 +6,7 @@ namespace dae { class Scene; }
 
 enum class CollisionGroup 
 {
+	none = 0x0000,
 	colGroup1 = 0x0001,
 	colGroup2 = 0x0002,
 	colGroup3 = 0x0004,
@@ -40,27 +41,30 @@ public:
 	b2Vec2 GetVelocity() const { return b2Vec2{ m_pBody->GetLinearVelocity().x * m_PPM, m_pBody->GetLinearVelocity().y * m_PPM }; }
 	float GetAngleRad() const { return m_pParent->GetTransform().GetAngle() / 180.f * 3.1415f; }
 	float GetAngleDeg() const { return m_pParent->GetTransform().GetAngle(); }
+	void SetPosition(const b2Vec2& position);
+	void SetLinVelocity(const b2Vec2& position);
 	void SetCollision(bool value);
 	void SetCollisionGroup(CollisionGroup group);
 	void SetCollisionIgnoreGroup(CollisionGroup group);
+	void SetGravity(bool value);
 
 private:
 
 	// Private Functions
 	b2Filter GetFilter() const;
-	CollisionGroup GetGroup(int i) const { return CollisionGroup( i ); }
+	CollisionGroup GetGroup(int i) const;
 
 	// Variables
 	b2Body* m_pBody;
 	b2Fixture* m_pFixture;
 	b2FixtureDef m_FixtureDef;
+	std::vector<bool> m_IgnoredGroup;
 	CollisionGroup m_CollisionGroup;
-	CollisionGroup m_IgnoredGroup;
 	int m_PPM;
 	bool m_IsStatic;
 
 	// Static variables
-	static const int m_AmountOfCollisionGroups = 16;
+	static const int m_AmountOfCollisionGroups = 6;
 
 };
 

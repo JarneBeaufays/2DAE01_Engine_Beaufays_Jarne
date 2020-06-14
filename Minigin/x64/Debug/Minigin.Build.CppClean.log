@@ -8,7 +8,6 @@ d:\school\school\2019-20\programming 4\week 05\2dae01_engine_beaufays_jarne\mini
 d:\school\school\2019-20\programming 4\week 05\2dae01_engine_beaufays_jarne\minigin\x64\debug\renderer.obj
 d:\school\school\2019-20\programming 4\week 05\2dae01_engine_beaufays_jarne\minigin\x64\debug\observer.obj
 d:\school\school\2019-20\programming 4\week 05\2dae01_engine_beaufays_jarne\minigin\x64\debug\objectcomponent.obj
-d:\school\school\2019-20\programming 4\week 05\2dae01_engine_beaufays_jarne\minigin\x64\debug\minigin.obj
 d:\school\school\2019-20\programming 4\week 05\2dae01_engine_beaufays_jarne\minigin\x64\debug\localtransform.obj
 d:\school\school\2019-20\programming 4\week 05\2dae01_engine_beaufays_jarne\minigin\x64\debug\inputmanager.obj
 d:\school\school\2019-20\programming 4\week 05\2dae01_engine_beaufays_jarne\minigin\x64\debug\imagecomponent.obj
@@ -20,7 +19,6 @@ d:\school\school\2019-20\programming 4\week 05\2dae01_engine_beaufays_jarne\mini
 d:\school\school\2019-20\programming 4\week 05\2dae01_engine_beaufays_jarne\minigin\x64\debug\button.obj
 d:\school\school\2019-20\programming 4\week 05\2dae01_engine_beaufays_jarne\minigin\x64\debug\boxtrigger.obj
 d:\school\school\2019-20\programming 4\week 05\2dae01_engine_beaufays_jarne\minigin\x64\debug\boxcollider.obj
-d:\school\school\2019-20\programming 4\week 05\2dae01_engine_beaufays_jarne\minigin\x64\debug\audiomanager.obj
 d:\school\school\2019-20\programming 4\week 05\2dae01_engine_beaufays_jarne\minigin\x64\debug\animatorcomponent.obj
 d:\school\school\2019-20\programming 4\week 05\2dae01_engine_beaufays_jarne\minigin\x64\debug\transform.obj
 d:\school\school\2019-20\programming 4\week 05\2dae01_engine_beaufays_jarne\minigin\x64\debug\time.obj
@@ -30,10 +28,13 @@ d:\school\school\2019-20\programming 4\week 05\2dae01_engine_beaufays_jarne\mini
 d:\school\school\2019-20\programming 4\week 05\2dae01_engine_beaufays_jarne\minigin\x64\debug\tagcomponent.obj
 d:\school\school\2019-20\programming 4\week 05\2dae01_engine_beaufays_jarne\minigin\x64\debug\statemachinecomponent.obj
 d:\school\school\2019-20\programming 4\week 05\2dae01_engine_beaufays_jarne\minigin\x64\debug\spritecomponent.obj
-d:\school\school\2019-20\programming 4\week 05\2dae01_engine_beaufays_jarne\minigin\x64\debug\soundeffect.obj
 d:\school\school\2019-20\programming 4\week 05\2dae01_engine_beaufays_jarne\minigin\x64\debug\singleton.obj
 d:\school\school\2019-20\programming 4\week 05\2dae01_engine_beaufays_jarne\minigin\x64\debug\scenemanager.obj
+d:\school\school\2019-20\programming 4\week 05\2dae01_engine_beaufays_jarne\minigin\x64\debug\minigin.obj
+d:\school\school\2019-20\programming 4\week 05\2dae01_engine_beaufays_jarne\minigin\x64\debug\audiomanager.obj
+d:\school\school\2019-20\programming 4\week 05\2dae01_engine_beaufays_jarne\minigin\x64\debug\soundeffect.obj
 d:\school\school\2019-20\programming 4\week 05\2dae01_engine_beaufays_jarne\x64\debug\minigin.lib
+d:\school\school\2019-20\programming 4\week 05\2dae01_engine_beaufays_jarne\minigin\x64\debug\rigidbody2d.new.obj.enc
 d:\school\school\2019-20\programming 4\week 05\2dae01_engine_beaufays_jarne\x64\debug\minigin.pdb
 d:\school\school\2019-20\programming 4\week 05\2dae01_engine_beaufays_jarne\minigin\x64\debug\minigin.tlog\cl.command.1.tlog
 d:\school\school\2019-20\programming 4\week 05\2dae01_engine_beaufays_jarne\minigin\x64\debug\minigin.tlog\cl.read.1.tlog

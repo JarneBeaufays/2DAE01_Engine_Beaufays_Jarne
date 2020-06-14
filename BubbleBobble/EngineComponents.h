@@ -1,0 +1,9 @@
+#pragma once
+#include "RigidBody2D.h"
+#include "BoxTrigger.h"
+#include "BoxCollider.h"
+#include "SpriteComponent.h"
+#include "AnimatorComponent.h"
+#include "StateMachineComponent.h"
+#include "TagComponent.h"
+#include "TextComponent.h"

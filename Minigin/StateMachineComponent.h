@@ -64,6 +64,7 @@ public:
 	StateMachineComponent(dae::GameObject* pParent, State* pState) : m_pCurrentState{ pState }, ObjectComponent { "StateMachineComponent", pParent } { };
 	void Update() override;
 	void Render() const override {};
+	void AddAnyStateTransition(Transition* pTrans) { m_AnyStateTransitions.push_back(pTrans); }
 
 	// Getters and Setters
 	State* GetCurrentState() const { return m_pCurrentState; }
@@ -72,6 +73,7 @@ public:
 private:
 
 	// Variables
+	std::vector<Transition*> m_AnyStateTransitions;
 	State* m_pCurrentState;
 
 };

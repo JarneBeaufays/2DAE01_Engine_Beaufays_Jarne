@@ -14,6 +14,7 @@ public:
 	void AddSprite(SpriteComponent* pSprite, bool isCurrent = false) { m_Sprites.push_back(pSprite); if (isCurrent || !m_pCurrentSprite) m_pCurrentSprite = pSprite; };
 
 	// Getters and Setters
+	bool GetFlipped() const { return m_pCurrentSprite->GetFlipped(); }
 	bool SetActiveSprite(const std::string& spriteName);
 	void SetFlipped(bool value) { for(SpriteComponent* pSprite : m_Sprites) pSprite->SetFlipped(value); }
 	void Flip() { for (SpriteComponent* pSprite : m_Sprites) pSprite->Flip(); }

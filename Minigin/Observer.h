@@ -3,7 +3,8 @@
 
 enum class ObserverEvent 
 {
-	playerStartedRunning, playerJumped
+	playerStartedRunning, playerJumped,
+	playerDropped, killedEnemy
 };
 
 class Observer

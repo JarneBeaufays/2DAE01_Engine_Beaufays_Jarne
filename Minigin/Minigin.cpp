@@ -11,6 +11,7 @@
 #include <SDL.h>
 #include "TextObject.h"
 #include "GameObject.h"
+#include "..\BubbleBobble\GameInfo.h"
 #include "Scene.h"
 #include "Time.h"
 
@@ -54,6 +55,7 @@ void dae::Minigin::Cleanup()
 
 void dae::Minigin::Run()
 {
+	auto& game = GameInfo::GetInstance();
 	auto& collision = CollisionManager::GetInstance();
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
@@ -72,6 +74,7 @@ void dae::Minigin::Run()
 		// Updating our singletons
 
 		Time::GetInstance().Update();
+		game.Update();
 		collision.Update();
 		sceneManager.Update();
 		renderer.Render();

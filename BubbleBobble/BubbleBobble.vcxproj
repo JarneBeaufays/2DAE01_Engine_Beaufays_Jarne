@@ -21,11 +21,17 @@
   <ItemGroup>
     <ClCompile Include="BackgroundImage.cpp" />
     <ClCompile Include="Box.cpp" />
+    <ClCompile Include="BubbleBullet.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameInfo.cpp" />
     <ClCompile Include="Ground.cpp" />
+    <ClCompile Include="HealthComponent.cpp" />
     <ClCompile Include="HighScore.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="SceneTimer.cpp" />
     <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -36,11 +42,19 @@
   <ItemGroup>
     <ClInclude Include="BackgroundImage.h" />
     <ClInclude Include="Box.h" />
+    <ClInclude Include="BubbleBullet.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyManager.h" />
+    <ClInclude Include="EngineComponents.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameComponents.h" />
+    <ClInclude Include="GameInfo.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="Headers.h" />
+    <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="HighScore.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="SceneTimer.h" />
     <ClInclude Include="Wall.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
