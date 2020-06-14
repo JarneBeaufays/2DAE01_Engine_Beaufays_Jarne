@@ -56,7 +56,6 @@ void dae::Minigin::Cleanup()
 void dae::Minigin::Run()
 {
 	auto& game = GameInfo::GetInstance();
-	auto& collision = CollisionManager::GetInstance();
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
@@ -75,7 +74,6 @@ void dae::Minigin::Run()
 
 		Time::GetInstance().Update();
 		game.Update();
-		collision.Update();
 		sceneManager.Update();
 		renderer.Render();
 

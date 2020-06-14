@@ -8,6 +8,20 @@ using namespace dae;
 
 unsigned int Scene::m_IdCounter = 0;
 
+CollisionManager* dae::Scene::GetCollisionManager() const
+{
+	for (auto ob : m_Objects) 
+	{
+		dae::GameObject* obj{ dynamic_cast<dae::GameObject*>(ob.get()) };
+		if (obj) 
+		{
+			if (obj->GetName() == "CollisionManager")
+				return dynamic_cast<CollisionManager*>(obj);
+		}
+	}
+	return nullptr;
+}
+
 Scene::Scene(const std::string& name)
 	: m_Name{ name }
 {
@@ -39,9 +53,9 @@ void Scene::Update()
 			// Delete object
 			// Remove the collision data
 			GameObject* pTemp{ dynamic_cast<GameObject*>(m_Objects[i].get()) };
-			CollisionManager::GetInstance().DeleteBox(pTemp->GetComponent<BoxTrigger>());
+			dae::SceneManager::GetInstance().GetCurrentScene()->GetCollisionManager()->DeleteBox(pTemp->GetComponent<BoxTrigger>());
 
-			// Remove the object from the list
+			// Remove the object from the list -> Smart Pointers
 			m_Objects[i] = m_Objects.back();
 			m_Objects.pop_back();
 			return;

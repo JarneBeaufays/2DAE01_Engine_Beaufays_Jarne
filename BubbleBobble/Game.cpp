@@ -2,6 +2,8 @@
 #include "Wall.h"
 #include "Ground.h"
 #include "BackgroundImage.h"
+#include "CollisionManager.h"
+#include "EnemyManager.h"
 #include "Box.h"
 #include "GameObject.h"
 #include "Player.h"
@@ -50,8 +52,8 @@ bool Game::CreateScenes()
 	CreateSceneOne();
 	CreateSceneTwo();
 	CreateSceneThree();
-	CreateEndScene();
 	CreateWinScene();
+	CreateEndScene();
 
 	return true;
 }
@@ -66,7 +68,6 @@ void Game::CleanPrivatePointers()
 void Game::CreateStartScene()
 {
 	auto& scene{ dae::SceneManager::GetInstance().CreateScene("Bubble Bobble - BeginScreen") };
-	dae::SceneManager::GetInstance().SetActiveScene(0);
 
 	std::shared_ptr<BackgroundImage> image{ std::make_shared<BackgroundImage>("StartScreen.png") };
 	image->GetTransform().SetPosition(0.f, 0.f);
@@ -89,6 +90,9 @@ void Game::CreateSceneOne()
 	// --- https://nl.trend-top.com/8-games-like-bubble-bobble-on-steam ---
 	// Creating the first scene
 	auto& scene{ dae::SceneManager::GetInstance().CreateScene("Bubble Bobble - Level 1") };
+
+	std::shared_ptr<CollisionManager> manager{ std::make_shared<CollisionManager>() };
+	scene.Add(manager);
 
 	std::shared_ptr<BackgroundImage> image{ std::make_shared<BackgroundImage>("Background.jpg") };
 	image->GetTransform().SetPosition(0.f, 0.f);
@@ -166,10 +170,14 @@ void Game::CreateSceneOne()
 	std::shared_ptr<Player> spPlayer{ std::make_shared<Player>(&scene, b2Vec2{ 100.f, 350.f }, b2Vec2{ 40.f, 60.f }) };
 	scene.Add(spPlayer);
 
+	// Enemy Manager
+	std::shared_ptr<EnemyManager> spEnemyManager{ std::make_shared<EnemyManager>(&scene, 0) };
+	scene.Add(spEnemyManager);
+
 	// Enemy
-	std::shared_ptr<Enemy> spEnemy{ std::make_shared<Enemy>(&scene, b2Vec2{ 270.f, 350.f }, b2Vec2{ 40.f, 60.f }, EnemyType::ZenChan) };
+	std::shared_ptr<Enemy> spEnemy{ std::make_shared<Enemy>(&scene, b2Vec2{ 270.f, 350.f }, b2Vec2{ 40.f, 60.f }, EnemyType::ZenChan, spEnemyManager) };
 	scene.Add(spEnemy);
-	spEnemy = std::make_shared<Enemy>(&scene, b2Vec2{ 490.f, 350.f }, b2Vec2{ 40.f, 60.f }, EnemyType::ZenChan);
+	spEnemy = std::make_shared<Enemy>(&scene, b2Vec2{ 490.f, 350.f }, b2Vec2{ 40.f, 60.f }, EnemyType::ZenChan, spEnemyManager);
 	scene.Add(spEnemy);
 
 	// --
@@ -180,7 +188,9 @@ void Game::CreateSceneTwo()
 	// Level: http://belgiquesets.servemp3.com:8000/bublbobl/bublbobl/www.adamdawes.com/retrogaming/bbguide/images/round02.gif
 	// Creating the Second scene
 	auto& scene{ dae::SceneManager::GetInstance().CreateScene("Bubble Bobble - Level 2") };
-	//dae::SceneManager::GetInstance().SetActiveScene(1);
+
+	std::shared_ptr<CollisionManager> manager{ std::make_shared<CollisionManager>() };
+	scene.Add(manager);
 
 	std::shared_ptr<BackgroundImage> image{ std::make_shared<BackgroundImage>("Background2.jpg") };
 	image->GetTransform().SetPosition(0.f, 0.f);
@@ -223,17 +233,86 @@ void Game::CreateSceneTwo()
 	std::shared_ptr<Player> spPlayer{ std::make_shared<Player>(&scene, b2Vec2{ 30.f, 30.f }, b2Vec2{ 40.f, 60.f }) };
 	scene.Add(spPlayer);
 
+	// Enemy Manager
+	std::shared_ptr<EnemyManager> spEnemyManager{ std::make_shared<EnemyManager>(&scene, 0) };
+	scene.Add(spEnemyManager);
+
 	// Enemy
-	std::shared_ptr<Enemy> spEnemy{ std::make_shared<Enemy>(&scene, b2Vec2{ 380.f, 300.f }, b2Vec2{ 40.f, 60.f }, EnemyType::ZenChan) };
+	std::shared_ptr<Enemy> spEnemy{ std::make_shared<Enemy>(&scene, b2Vec2{ 380.f, 300.f }, b2Vec2{ 40.f, 60.f }, EnemyType::ZenChan, spEnemyManager) };
 	scene.Add(spEnemy);
-	spEnemy = std::make_shared<Enemy>(&scene, b2Vec2{ 150.f, 150.f }, b2Vec2{ 40.f, 60.f }, EnemyType::ZenChan);
+	spEnemy = std::make_shared<Enemy>(&scene, b2Vec2{ 150.f, 150.f }, b2Vec2{ 40.f, 60.f }, EnemyType::ZenChan, spEnemyManager);
 	scene.Add(spEnemy);
-	spEnemy = std::make_shared<Enemy>(&scene, b2Vec2{ 610.f, 150.f }, b2Vec2{ 40.f, 60.f }, EnemyType::ZenChan);
+	spEnemy = std::make_shared<Enemy>(&scene, b2Vec2{ 610.f, 150.f }, b2Vec2{ 40.f, 60.f }, EnemyType::ZenChan, spEnemyManager);
 	scene.Add(spEnemy);
 }
 
 void Game::CreateSceneThree()
 {
+	// Level: https://lh3.googleusercontent.com/proxy/SOkFLHWP-vyuJuKaS7PJLjZGZLgTf_fOxAjnxya1CIJMbUGagtCuYUaBNEp8ipAlDSBAeHYdfqER2HZIbX7DmS9eW-jvSjegu7XJ9zbdG5PebZOgqrHDa5n6sDKdQv57PDQoiuzTU63TdO-2whLOA3rHpyt_6OWlEjd4BYrtW67KZtEqbAF-qA
+	// Creating the third scene
+	auto& scene{ dae::SceneManager::GetInstance().CreateScene("Bubble Bobble - Level 3") };
+
+	std::shared_ptr<CollisionManager> manager{ std::make_shared<CollisionManager>() };
+	scene.Add(manager);
+
+	std::shared_ptr<BackgroundImage> image{ std::make_shared<BackgroundImage>("Background3.jpg") };
+	image->GetTransform().SetPosition(0.f, 0.f);
+	scene.Add(image);
+
+	std::shared_ptr<Ground> ground{ std::make_shared<Ground>(&scene, b2Vec2{ 0.f, 0.f }, b2Vec2{ 800.f, 30.f }) };
+	scene.Add(ground);
+
+	ground = std::make_shared<Ground>(&scene, b2Vec2{ 30.f, 120.f }, b2Vec2{ 100.f, 30.f });
+	scene.Add(ground);
+
+	ground = std::make_shared<Ground>(&scene, b2Vec2{ 30.f, 280.f }, b2Vec2{ 100.f, 30.f });
+	scene.Add(ground);
+
+	ground = std::make_shared<Ground>(&scene, b2Vec2{ 30.f, 440.f }, b2Vec2{ 100.f, 30.f });
+	scene.Add(ground);
+
+	ground = std::make_shared<Ground>(&scene, b2Vec2{ 670.f, 120.f }, b2Vec2{ 100.f, 30.f });
+	scene.Add(ground);
+
+	ground = std::make_shared<Ground>(&scene, b2Vec2{ 670.f, 280.f }, b2Vec2{ 100.f, 30.f });
+	scene.Add(ground);
+
+	ground = std::make_shared<Ground>(&scene, b2Vec2{ 670.f, 440.f }, b2Vec2{ 100.f, 30.f });
+	scene.Add(ground);
+
+	ground = std::make_shared<Ground>(&scene, b2Vec2{ 250.f, 120.f }, b2Vec2{ 300.f, 30.f });
+	scene.Add(ground);
+
+	ground = std::make_shared<Ground>(&scene, b2Vec2{ 250.f, 280.f }, b2Vec2{ 300.f, 30.f });
+	scene.Add(ground);
+
+	ground = std::make_shared<Ground>(&scene, b2Vec2{ 250.f, 440.f }, b2Vec2{ 300.f, 30.f });
+	scene.Add(ground);
+
+	std::shared_ptr<Wall> wall{ std::make_shared<Wall>(&scene, b2Vec2{ 0.f, 640.f }, b2Vec2{ 800.f, 30.f }) };
+	scene.Add(wall);
+	
+	wall = std::make_shared<Wall>(&scene, b2Vec2{ 0.f, 0.f }, b2Vec2{ 30.f, 670.f });
+	scene.Add(wall);
+
+	wall = std::make_shared<Wall>(&scene, b2Vec2{ 770.f, 0.f }, b2Vec2{ 30.f, 670.f });
+	scene.Add(wall);
+
+	// Player
+	std::shared_ptr<Player> spPlayer{ std::make_shared<Player>(&scene, b2Vec2{ 30.f, 30.f }, b2Vec2{ 40.f, 60.f }) };
+	scene.Add(spPlayer);
+
+	// Enemy Manager
+	std::shared_ptr<EnemyManager> spEnemyManager{ std::make_shared<EnemyManager>(&scene, 0) };
+	scene.Add(spEnemyManager);
+
+	// Enemy
+	std::shared_ptr<Enemy> spEnemy{ std::make_shared<Enemy>(&scene, b2Vec2{ 380.f, 300.f }, b2Vec2{ 40.f, 60.f }, EnemyType::ZenChan, spEnemyManager) };
+	scene.Add(spEnemy);
+	spEnemy = std::make_shared<Enemy>(&scene, b2Vec2{ 50.f, 150.f }, b2Vec2{ 40.f, 60.f }, EnemyType::ZenChan, spEnemyManager);
+	scene.Add(spEnemy);
+	spEnemy = std::make_shared<Enemy>(&scene, b2Vec2{ 720.f, 150.f }, b2Vec2{ 40.f, 60.f }, EnemyType::ZenChan, spEnemyManager);
+	scene.Add(spEnemy);
 }
 
 void Game::CreateEndScene()

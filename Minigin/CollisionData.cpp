@@ -12,6 +12,7 @@ CollisionData::CollisionData(BoxTrigger* a, BoxTrigger* b)
 
 void CollisionData::Update()
 {
+	if (!this) return;
 	if (!m_pBoxA || !m_pBoxB) return;
 
 	// In here we check if we started colliding / are colliding / stopped colliding
@@ -39,7 +40,8 @@ void CollisionData::Update()
 
 bool CollisionData::RectInRect() const
 {
-	if (!m_pBoxA || !m_pBoxB) false;
+	if (!this) return false;
+	if (!m_pBoxA || !m_pBoxB) return false;
 
 	// Getting some variables
 	Rectangle2V col{ m_pBoxA->GetRectangle() };

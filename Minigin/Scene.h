@@ -4,6 +4,8 @@
 #include "ResourceManager.h"
 #include "Box2D.h"
 
+class CollisionManager;
+
 namespace dae
 {
 	class SceneObject;
@@ -28,6 +30,8 @@ namespace dae
 		b2Body* CreateBody(b2BodyDef* bodyDef) { return m_pPhysicsWorld->CreateBody(bodyDef); };
 		b2World* GetWorld() const { return m_pPhysicsWorld; }
 		const std::string& GetName() const { return m_Name; }
+		const std::vector <std::shared_ptr<SceneObject>> GetObjects() const { return m_Objects; }
+		CollisionManager* GetCollisionManager() const;
 		const int GetPPM() const { return m_PPM; }
 
 	private: 

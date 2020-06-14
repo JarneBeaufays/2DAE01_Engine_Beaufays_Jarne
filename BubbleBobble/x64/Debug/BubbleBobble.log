@@ -1,15 +1,8 @@
-<<<<<<< HEAD
-﻿  BackgroundImage.cpp
-  Box.cpp
+﻿  Enemy.cpp
   Game.cpp
-  Ground.cpp
-  HighScore.cpp
+  HealthComponent.cpp
   Player.cpp
-  Wall.cpp
-  main.cpp
+D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\BubbleBobble\Player.cpp(20,15): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
   Generating Code...
-  LINK : D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\x64\Debug\BubbleBobble.exe not found or not built by the last incremental link; performing full link
+D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\BubbleBobble\Player.cpp(23,79): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   BubbleBobble.vcxproj -> D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\x64\Debug\BubbleBobble.exe
-=======
-﻿  BubbleBobble.vcxproj -> D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\x64\Debug\BubbleBobble.exe
->>>>>>> parent of 4a5968b... Revert "Okay so.."

@@ -1,5 +1,5 @@
-<<<<<<< HEAD
-﻿  AnimatorComponent.cpp
+﻿  MiniginPCH.cpp
+  AnimatorComponent.cpp
   AudioManager.cpp
   BoxCollider.cpp
   BoxTrigger.cpp
@@ -13,10 +13,26 @@
   InputManager.cpp
   LocalTransform.cpp
   Minigin.cpp
+  ObjectComponent.cpp
+  Observer.cpp
+  Renderer.cpp
+  ResourceManager.cpp
+  RigidBody2D.cpp
+  Scene.cpp
   Generating Code...
-=======
-﻿  CollisionData.cpp
->>>>>>> parent of 4a5968b... Revert "Okay so.."
+  Compiling...
+  SceneManager.cpp
+  Singleton.cpp
+  SoundEffect.cpp
+  SpriteComponent.cpp
+  StateMachineComponent.cpp
+  TagComponent.cpp
+  TextComponent.cpp
+  TextObject.cpp
+  Texture2D.cpp
+  Time.cpp
+  Transform.cpp
+  Generating Code...
   Minigin.vcxproj -> D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\x64\Debug\Minigin.lib
   D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\3rdParty\SDL2\lib\x64\SDL2.dll
   1 File(s) copied

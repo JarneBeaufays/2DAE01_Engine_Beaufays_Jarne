@@ -9,6 +9,7 @@ public:
 
 	// Functions
 	Player(dae::Scene* pScene, b2Vec2 position, b2Vec2 size);
+	~Player();
 	void Update() override;
 	void Render() const override;
 

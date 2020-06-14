@@ -15,19 +15,12 @@ void EnemyManager::Update()
 		m_CurrentTimer += Time::GetInstance().GetDeltaTime();
 		if (m_CurrentTimer > m_SecondsBeforeSwap)
 		{ 
-			if (dae::SceneManager::GetInstance().GetCurrentScene()->GetName() == "Bubble Bobble - Level 1") 
-			{
-				dae::SceneManager::GetInstance().SetActiveScene("Bubble Bobble - Level 2");
-			}
-			else
-			{
-				dae::SceneManager::GetInstance().SetActiveScene("Bubble Bobble - Win");
-			}
+			dae::SceneManager::GetInstance().NextScene();
 		}
 	}
 }
 
 void EnemyManager::Notify(dae::GameObject* pObject, ObserverEvent event)
 {
-	if (event == ObserverEvent::killedEnemy && m_pScene == dae::SceneManager::GetInstance().GetCurrentScene().get()) m_AmountRemaining--;
+	if (event == ObserverEvent::killedEnemy) m_AmountRemaining--;
 }

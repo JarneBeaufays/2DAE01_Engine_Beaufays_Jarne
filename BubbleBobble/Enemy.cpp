@@ -2,11 +2,13 @@
 #include "GameComponents.h"
 #include "EngineComponents.h"
 #include "CollisionManager.h"
+#include "CollisionData.h"
+#include "EnemyManager.h"
 #include "GameInfo.h"
 #include "..\Minigin\Time.h"
 #include <iostream>
 
-Enemy::Enemy(dae::Scene* pScene, b2Vec2 position, b2Vec2 size, EnemyType enemyType)
+Enemy::Enemy(dae::Scene* pScene, b2Vec2 position, b2Vec2 size, EnemyType enemyType, std::shared_ptr<EnemyManager> spEnemyManager)
 	: m_EnemyType{ enemyType }
 {
 	// Getting some variables
@@ -29,6 +31,9 @@ Enemy::Enemy(dae::Scene* pScene, b2Vec2 position, b2Vec2 size, EnemyType enemyTy
 
 	TagComponent* pTag{ new TagComponent(this, "Enemy") };
 	AddComponent(pTag);
+
+	AddObserver(static_cast<Observer*>(spEnemyManager.get()));
+	spEnemyManager->AddEnemy();
 
 	InitSprites();
 	InitStateMachine();
@@ -125,7 +130,7 @@ void Enemy::InitStateMachine()
 		{
 			if (GetComponent<StateMachineComponent>()->GetCurrentStateName() != "InBubble") 
 			{
-				for (CollisionData* pColData : CollisionManager::GetInstance().GetTriggersEntered())
+				for (CollisionData* pColData : dae::SceneManager::GetInstance().GetCurrentScene()->GetCollisionManager()->GetTriggersEntered())
 				{
 					// Get tags from triggers
 					TagComponent* tagA{ static_cast<TagComponent*>(pColData->GetBoxA()->GetParent()->GetComponent("TagComponent")) };
@@ -283,7 +288,7 @@ void Enemy::InitSprites()
 void Enemy::OnTriggerCollision()
 {
 	// Get all the triggers that just started
-	std::vector<CollisionData*> triggersCollided{ CollisionManager::GetInstance().GetTriggersColliding() };
+	std::vector<CollisionData*> triggersCollided{ dae::SceneManager::GetInstance().GetCurrentScene()->GetCollisionManager()->GetTriggersColliding() };
 	for (CollisionData* colData : triggersCollided)
 	{
 		// Get tags from triggers
@@ -313,14 +318,15 @@ void Enemy::OnTriggerCollision()
 						{
 							// Player kills enemy -> Player has to get 100 points
 							GameInfo::GetInstance().AddPoints(100.f);
-							pEnemy->Delete();
 							Notify(this, ObserverEvent::killedEnemy);
+							pEnemy->Delete();
 						}
 						else
 						{
 							// Enemy damages player
 							HealthComponent* pHealth{ pPlayer->GetComponent<HealthComponent>() };
 							pHealth->DealDamage(1);
+							if (pHealth->GetIsDead()) pPlayer->Delete();
 						}
 					}
 				}

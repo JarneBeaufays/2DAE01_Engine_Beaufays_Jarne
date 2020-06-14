@@ -40,7 +40,7 @@ BubbleBullet::BubbleBullet(GameObject* pParent)
 			auto rb{ GetComponent<RigidBody2D>() };
 			rb->SetLinVelocity(b2Vec2(0.f, 0.f));
 			rb->SetCollision(false);
-			rb->SetGravity(-0.1f);
+			rb->SetGravity(true);
 		}
 	};
 	pFlying->AddEntryAction(entryFly);

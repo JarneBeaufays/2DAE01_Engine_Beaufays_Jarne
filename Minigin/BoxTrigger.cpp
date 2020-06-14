@@ -1,6 +1,7 @@
 #include "MiniginPCH.h"
 #include "BoxTrigger.h"
 #include "CollisionManager.h"
+#include "SceneManager.h"
 #include "SDL.h"
 #include "Renderer.h"
 
@@ -11,9 +12,6 @@ BoxTrigger::BoxTrigger(dae::GameObject* pParent, const b2Vec2& position, const b
 	// Setting some variables
 	m_Rectangle.m_Size = size;
 	m_Rectangle.m_Position = b2Vec2(position.x - m_Rectangle.m_Size.x / 2.f, position.y - m_Rectangle.m_Size.y / 2.f);
-
-	// Adding our box in our manager
-	CollisionManager::GetInstance().AddBox(this);
 }
 
 void BoxTrigger::Update()

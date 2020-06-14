@@ -30,6 +30,8 @@ namespace dae
 		T* GetComponent() const;
 		ObjectComponent* GetComponent(const std::string& componentName) const;
 		std::vector<ObjectComponent*> GetComponents(const std::string& componentName) const;
+		void SetName(const std::string & name) { m_Name = name; }
+		const std::string& GetName() const { return m_Name; }
 		void AddComponent(ObjectComponent* component);
 		virtual void OnTriggerEnter() { };
 		virtual void OnTriggerCollision() { };
@@ -44,6 +46,7 @@ namespace dae
 		// Private variables
 		Transform m_Transform;
 		std::vector<ObjectComponent*> m_pComponents;
+		std::string m_Name{ "" };
 	
 	};
 

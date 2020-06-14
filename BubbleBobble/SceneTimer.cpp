@@ -8,6 +8,6 @@ void SceneTimer::Update()
 	if (m_CurrentTimer > m_LeaveAfter) 
 	{
 		// Leave Scene
-		dae::SceneManager::GetInstance().SetActiveScene("Bubble Bobble - Level 1");
+		dae::SceneManager::GetInstance().NextScene();
 	}
 }

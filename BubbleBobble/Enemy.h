@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Observer.h"
+#include "EnemyManager.h"
 
 enum class EnemyType 
 {
@@ -12,7 +13,7 @@ class Enemy : public dae::GameObject, public Subject
 public:
 
 	// Functions
-	Enemy(dae::Scene* pScene, b2Vec2 position, b2Vec2 size, EnemyType enemyType);
+	Enemy(dae::Scene* pScene, b2Vec2 position, b2Vec2 size, EnemyType enemyType, std::shared_ptr<EnemyManager> spEnemyManager);
 	void Update() override;
 	void Render() const override { dae::GameObject::Render(); };
 	

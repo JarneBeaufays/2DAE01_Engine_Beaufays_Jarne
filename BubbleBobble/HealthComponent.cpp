@@ -46,6 +46,5 @@ void HealthComponent::DealDamage(int damage)
 		m_Alive = false;
 		m_CurrentHealth = 0;
 		std::cout << "HC: Auwch ... Player is dead. Better luck next time!\n";
-		dae::SceneManager::GetInstance().SetActiveScene("Bubble Bobble - EndScreen");
 	}
 }

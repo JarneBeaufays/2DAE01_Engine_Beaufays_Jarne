@@ -11,6 +11,7 @@ public:
 	EnemyManager(dae::Scene* pScene, const int amount);
 	void Update() override;
 	void Notify(dae::GameObject* pObject, ObserverEvent event) override;
+	void AddEnemy() { m_AmountRemaining++; }
 
 private:
 

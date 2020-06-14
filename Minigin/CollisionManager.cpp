@@ -1,8 +1,28 @@
 #include "MiniginPCH.h"
 #include "CollisionManager.h"
+#include "SceneManager.h"
+#include <algorithm>
+#include <vector>
+
+CollisionManager::CollisionManager()
+{
+	SetName("CollisionManager");
+}
 
 void CollisionManager::Update()
 {
+	// Add other game objects boxes
+	if (m_FirstFrame) 
+	{
+		auto objects = dae::SceneManager::GetInstance().GetCurrentScene()->GetObjects();
+		for(auto spOb : objects)
+		{
+			BoxTrigger* pBoxTrigger{ dynamic_cast<dae::GameObject*>(spOb.get())->GetComponent<BoxTrigger>() };
+			if (pBoxTrigger) AddBox(pBoxTrigger);
+		}
+		m_FirstFrame = false;
+	}
+
 	// Update all our datas
 	for (CollisionData* pData : m_CollisionDatas) pData->Update();
 }
@@ -20,7 +40,7 @@ void CollisionManager::AddBox(BoxTrigger* pBox)
 std::vector<CollisionData*> CollisionManager::GetTriggersEntered() const
 {
 	std::vector<CollisionData*> pTriggers;
-	for (CollisionData* pData : m_CollisionDatas)
+	for (auto pData : m_CollisionDatas)
 	{
 		if (pData->GetState() == TriggerState::started) pTriggers.push_back(pData);
 	}
@@ -30,7 +50,7 @@ std::vector<CollisionData*> CollisionManager::GetTriggersEntered() const
 std::vector<CollisionData*> CollisionManager::GetTriggersColliding() const
 {
 	std::vector<CollisionData*> pTriggers;
-	for (CollisionData* pData : m_CollisionDatas)
+	for (auto pData : m_CollisionDatas)
 	{
 		if (pData->GetState() == TriggerState::colliding) pTriggers.push_back(pData);
 	}
@@ -40,7 +60,7 @@ std::vector<CollisionData*> CollisionManager::GetTriggersColliding() const
 std::vector<CollisionData*> CollisionManager::GetTriggersExited() const
 {
 	std::vector<CollisionData*> pTriggers;
-	for (CollisionData* pData : m_CollisionDatas)
+	for (auto pData : m_CollisionDatas)
 	{
 		if (pData->GetState() == TriggerState::ended) pTriggers.push_back(pData);
 	}
@@ -49,6 +69,24 @@ std::vector<CollisionData*> CollisionManager::GetTriggersExited() const
 
 void CollisionManager::DeleteBox(BoxTrigger* pBox)
 {
+	// Removing this box
+	std::vector<CollisionData*> newCollisions;
+	for (auto pColData : m_CollisionDatas) 
+	{
+		if (pColData->GetBoxA() != pBox && pColData->GetBoxB() != pBox) 
+		{
+			newCollisions.push_back(pColData);
+		}
+		else
+		{
+			delete pColData;
+			pColData = nullptr;
+		}
+	}
+
+	m_CollisionDatas = newCollisions;
+
+	/*
 	// We want to delete the collision datas with this box
 	std::vector<unsigned int> toDelete;
 
@@ -62,11 +100,19 @@ void CollisionManager::DeleteBox(BoxTrigger* pBox)
 	}
 
 	// Remove all the collisions
+	auto size{ m_CollisionDatas.size() - 1 };
 	for (unsigned int i{}; i < toDelete.size(); i++) 
 	{
-		delete m_CollisionDatas[toDelete[i]];
-		m_CollisionDatas[toDelete[i]] = m_CollisionDatas[(m_CollisionDatas.size() - 1) - i];
+		if (m_CollisionDatas[toDelete[i]]) 
+		{
+			if (m_CollisionDatas[toDelete[i]]->GetBoxA() && m_CollisionDatas[toDelete[i]]->GetBoxB())
+			{
+				delete m_CollisionDatas[toDelete[i]];
+				m_CollisionDatas[toDelete[i]] = nullptr;
+				m_CollisionDatas[toDelete[i]] = m_CollisionDatas[size - (i * 2)];
+			}
+		}
 	}
 
-	for (unsigned int i{}; i < toDelete.size(); i++) m_CollisionDatas.pop_back();
+	for (unsigned int i{}; i < toDelete.size(); i++) m_CollisionDatas.pop_back();*/
 }

@@ -53,6 +53,11 @@ Player::Player(dae::Scene* pScene, b2Vec2 position, b2Vec2 size)
 	InitSounds();
 }
 
+Player::~Player()
+{
+	dae::SceneManager::GetInstance().SetActiveScene("Bubble Bobble - EndScreen");
+}
+
 void Player::Update()
 {
 	// Updating children
@@ -369,6 +374,7 @@ void Player::InitControls()
 				m_AllowedToShoot = false;
 				std::shared_ptr<BubbleBullet> spBullet{ std::make_shared<BubbleBullet>(this) };
 				dae::SceneManager::GetInstance().GetCurrentScene()->Add(spBullet);
+				dae::SceneManager::GetInstance().GetCurrentScene()->GetCollisionManager()->AddBox(spBullet->GetComponent<BoxTrigger>());
 			}
 		},
 		[]() {},
@@ -416,7 +422,7 @@ void Player::TeleportPlayer()
 void Player::OnTriggerEnter()
 {
 	// Get all the triggers that just started
-	std::vector<CollisionData*> triggersEntered{ CollisionManager::GetInstance().GetTriggersEntered() };
+	std::vector<CollisionData*> triggersEntered{ dae::SceneManager::GetInstance().GetCurrentScene()->GetCollisionManager()->GetTriggersEntered() };
 	for (CollisionData* colData : triggersEntered)
 	{
 		// Get tags from triggers
@@ -450,7 +456,7 @@ void Player::OnTriggerEnter()
 void Player::OnTriggerExit()
 {
 	// Get all the triggers that just started
-	std::vector<CollisionData*> triggersExited{ CollisionManager::GetInstance().GetTriggersExited() };
+	std::vector<CollisionData*> triggersExited{ dae::SceneManager::GetInstance().GetCurrentScene()->GetCollisionManager()->GetTriggersExited() };
 	for (CollisionData* colData : triggersExited)
 	{
 		// Get tags from triggers
