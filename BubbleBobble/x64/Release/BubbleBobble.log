@@ -1,0 +1,19 @@
+﻿  BackgroundImage.cpp
+  Box.cpp
+  BubbleBullet.cpp
+  Enemy.cpp
+  EnemyManager.cpp
+  Game.cpp
+  GameInfo.cpp
+  Ground.cpp
+  HealthComponent.cpp
+  HighScore.cpp
+  main.cpp
+  Player.cpp
+  SceneTimer.cpp
+  Wall.cpp
+  Generating code
+  Previous IPDB not found, fall back to full compilation.
+  All 2603 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  BubbleBobble.vcxproj -> D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\x64\Release\BubbleBobble.exe

@@ -2,14 +2,15 @@
 #include "GameObject.h"
 #include "Box2D.h"
 #include "Observer.h"
+#include "Scene.h"
+#include <memory>
 
-namespace dae { class Scene; }
 class Player : public dae::GameObject, public Subject
 {
 public:
 
 	// Functions
-	Player(dae::Scene* pScene, b2Vec2 position, b2Vec2 size);
+	Player(std::shared_ptr<dae::Scene> pScene, b2Vec2 position, b2Vec2 size);
 	~Player();
 	void Update() override;
 	void Render() const override;
@@ -28,7 +29,7 @@ private:
 	void TeleportPlayer();
 
 	// Variables
-	dae::Scene* m_pScene;
+	std::shared_ptr<dae::Scene> m_spScene;
 	const float m_TimeBetweenAttack{ 0.3f };
 	float m_CurrentShootTimer{ 0.0f };
 	int m_PPM;

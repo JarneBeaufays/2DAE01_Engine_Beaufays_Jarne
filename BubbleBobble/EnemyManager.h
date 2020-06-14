@@ -8,7 +8,7 @@ class EnemyManager : public Observer, public dae::GameObject
 public:
 
 	// Functions
-	EnemyManager(dae::Scene* pScene, const int amount);
+	EnemyManager(std::shared_ptr<dae::Scene> pScene, const int amount);
 	void Update() override;
 	void Notify(dae::GameObject* pObject, ObserverEvent event) override;
 	void AddEnemy() { m_AmountRemaining++; }
@@ -16,7 +16,7 @@ public:
 private:
 
 	// Variables
-	dae::Scene* m_pScene;
+	std::shared_ptr<dae::Scene> m_pScene;
 	float m_CurrentTimer{ 0.0f };
 	int m_SecondsBeforeSwap{ 3 };
 	int m_AmountRemaining;

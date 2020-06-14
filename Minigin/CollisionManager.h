@@ -10,6 +10,7 @@ public:
 
 	// Functions
 	CollisionManager();
+	~CollisionManager();
 	void Update();
 	void AddBox(BoxTrigger* pBox);
 	void DeleteBox(BoxTrigger* pBox);

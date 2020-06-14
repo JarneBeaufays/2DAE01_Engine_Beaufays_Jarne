@@ -11,6 +11,7 @@ public:
 
 	// Functions
 	Transition(State* pTargetState) : m_pTargetState{ nullptr } { m_pTargetState = pTargetState; };
+	~Transition();
 	bool Update();
 	void AddCondition(std::function<bool()>& function) { m_Conditions.push_back(function); }
 	void AddExitAction(std::function<void()>& function) { m_ExitActions.push_back(function); }
@@ -62,6 +63,7 @@ public:
 
 	// Functions
 	StateMachineComponent(dae::GameObject* pParent, State* pState) : m_pCurrentState{ pState }, ObjectComponent { "StateMachineComponent", pParent } { };
+	~StateMachineComponent();
 	void Update() override;
 	void Render() const override {};
 	void AddAnyStateTransition(Transition* pTrans) { m_AnyStateTransitions.push_back(pTrans); }

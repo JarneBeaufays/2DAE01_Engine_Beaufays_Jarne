@@ -8,7 +8,7 @@ public:
 
 	Box() = default;
 
-	void Initialize(dae::Scene* pScene, const b2Vec2& position, const b2Vec2& size);
+	void Initialize(std::shared_ptr<dae::Scene> pScene, const b2Vec2& position, const b2Vec2& size);
 	void Update() override;
 	void Render() const;
 

@@ -13,7 +13,8 @@ namespace dae
 	public:
 
 		// Functions
-		Scene& CreateScene(const std::string& name);
+		std::shared_ptr<dae::Scene> CreateScene(const std::string& name);
+		void Destroy();
 		void Update();
 		void Render();
 		bool NextScene();

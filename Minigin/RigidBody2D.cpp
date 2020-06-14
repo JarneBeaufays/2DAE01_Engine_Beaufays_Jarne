@@ -5,6 +5,7 @@
 #include "SDL.h"
 #include "Time.h"
 #include "Scene.h"
+#include "Box2d.h"
 
 RigidBody2D::RigidBody2D(dae::GameObject* pParent)
 	: ObjectComponent{ "RigidBody2D", pParent }
@@ -18,7 +19,13 @@ RigidBody2D::RigidBody2D(dae::GameObject* pParent)
 	m_IgnoredGroup[5] = true;
 }
 
-void RigidBody2D::Initialize(dae::Scene* pScene, const b2Vec2& size, const b2Vec2& position, b2BodyType type, float density, float friction, bool disableRot)
+RigidBody2D::~RigidBody2D()
+{
+	m_pBody->DestroyFixture(m_pFixture);
+	m_pBody = nullptr;
+}
+
+void RigidBody2D::Initialize(std::shared_ptr<dae::Scene> pScene, const b2Vec2& size, const b2Vec2& position, b2BodyType type, float density, float friction, bool disableRot)
 {
 	// Checking if we have a static body
 	if (type != b2BodyType::b2_staticBody) m_IsStatic = false;

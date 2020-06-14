@@ -3,14 +3,19 @@
 #include "Scene.h"
 #include "..\BubbleBobble\Player.h"
 
-dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
+std::shared_ptr<dae::Scene> dae::SceneManager::CreateScene(const std::string& name)
 {
 	// Creating the scene
 	const auto scene = std::shared_ptr<Scene>(new Scene(name));
 
 	// Pushing back our scene
 	m_spScenes.push_back(scene);
-	return *scene;
+	return scene;
+}
+
+void dae::SceneManager::Destroy()
+{
+	m_spScenes.clear();
 }
 
 void dae::SceneManager::Update()
@@ -46,7 +51,7 @@ void dae::SceneManager::InstantiateObject(std::shared_ptr<dae::SceneObject> spOb
 bool dae::SceneManager::SetActiveScene(const std::string& name)
 {
 	// Go over all the scenes and compare the names
-	for (int i{}; i < m_spScenes.size(); i++) 
+	for (unsigned int i{}; i < m_spScenes.size(); i++) 
 	{
 		if (m_spScenes[i]->GetName() == name)
 		{

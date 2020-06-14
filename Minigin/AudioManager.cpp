@@ -4,6 +4,16 @@
 #include "SDL.h"
 #include "SDL_mixer.h"
 
+void AudioManager::Destroy()
+{
+	for (SoundEffect* pSoundEffect : m_SoundEffects)
+	{
+		delete pSoundEffect;
+		pSoundEffect = nullptr;
+	}
+	m_SoundEffects.clear();
+}
+
 void AudioManager::Init(const std::string& prefix)
 {
 	// Initialize our SDL_Mixer
@@ -36,12 +46,12 @@ void AudioManager::Notify(dae::GameObject* pObject, ObserverEvent event)
 void AudioManager::PlaySound(SoundEffectType type) const
 {
 	// Loop over all the sound effects
-	for (const SoundEffect& soundEffect : m_SoundEffects) 
+	for (SoundEffect* soundEffect : m_SoundEffects) 
 	{
-		if (soundEffect.GetType() == type) 
+		if (soundEffect->GetType() == type) 
 		{
 			// Ayee we want to play this sound!
-			soundEffect.Play();
+			soundEffect->Play();
 		}
 	}
 }

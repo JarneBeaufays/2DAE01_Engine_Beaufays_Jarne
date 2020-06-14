@@ -9,15 +9,16 @@ class AudioManager : public Observer, public dae::Singleton<AudioManager>
 public:
 
 	// Functions
+	void Destroy();
 	void Init(const std::string& prefix);
-	void AddSoundEffect(const std::string& fileName, SoundEffectType type) { m_SoundEffects.push_back(SoundEffect{ std::string(m_Prefix + fileName), type }); }
+	void AddSoundEffect(const std::string& fileName, SoundEffectType type) { m_SoundEffects.push_back(new SoundEffect{ std::string(m_Prefix + fileName), type }); }
 	void Notify(dae::GameObject* pObject, ObserverEvent event) override;
 	void PlaySound(SoundEffectType type) const;
 
 private:
 
 	// Variables
-	std::vector<SoundEffect> m_SoundEffects;
+	std::vector<SoundEffect*> m_SoundEffects;
 	std::string m_Prefix;
 
 };

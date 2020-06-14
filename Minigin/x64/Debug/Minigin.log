@@ -1,37 +1,25 @@
-﻿  MiniginPCH.cpp
-  AnimatorComponent.cpp
+﻿  AnimatorComponent.cpp
   AudioManager.cpp
   BoxCollider.cpp
   BoxTrigger.cpp
-  Button.cpp
   CollisionData.cpp
   CollisionManager.cpp
-  Command.cpp
-  Font.cpp
   GameObject.cpp
   ImageComponent.cpp
-  InputManager.cpp
-  LocalTransform.cpp
   Minigin.cpp
   ObjectComponent.cpp
   Observer.cpp
   Renderer.cpp
-  ResourceManager.cpp
   RigidBody2D.cpp
   Scene.cpp
-  Generating Code...
-  Compiling...
   SceneManager.cpp
-  Singleton.cpp
-  Song.cpp
   SoundEffect.cpp
   SpriteComponent.cpp
   StateMachineComponent.cpp
   TagComponent.cpp
   TextComponent.cpp
-  TextObject.cpp
-  Texture2D.cpp
-  Time.cpp
+  Generating Code...
+  Compiling...
   Transform.cpp
   Generating Code...
   Minigin.vcxproj -> D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\x64\Debug\Minigin.lib

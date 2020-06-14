@@ -1,4 +1,45 @@
-﻿  Player.cpp
-D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\BubbleBobble\Player.cpp(20,15): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\BubbleBobble\Player.cpp(23,79): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-  BubbleBobble.vcxproj -> D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\x64\Debug\BubbleBobble.exe
+﻿  Game.cpp
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.23.28105\include\xmemory(200,115): error C2280: 'dae::Scene::Scene(const dae::Scene &)': attempting to reference a deleted function
+D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\Minigin\Scene.h(25): message : see declaration of 'dae::Scene::Scene'
+D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\Minigin\Scene.h(25,3): message : 'dae::Scene::Scene(const dae::Scene &)': function was explicitly deleted
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.23.28105\include\memory(1492): message : see reference to function template instantiation 'void std::_Construct_in_place<_Ty,dae::Scene&>(_Ty &,dae::Scene &) noexcept(false)' being compiled
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.23.28105\include\memory(1492): message :         with
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.23.28105\include\memory(1492): message :         [
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.23.28105\include\memory(1492): message :             _Ty=dae::Scene
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.23.28105\include\memory(1492): message :         ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.23.28105\include\memory(1592): message : see reference to function template instantiation 'std::_Ref_count_obj2<_Ty>::_Ref_count_obj2<dae::Scene&>(dae::Scene &)' being compiled
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.23.28105\include\memory(1592): message :         with
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.23.28105\include\memory(1592): message :         [
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.23.28105\include\memory(1592): message :             _Ty=dae::Scene
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.23.28105\include\memory(1592): message :         ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.23.28105\include\memory(1593): message : see reference to function template instantiation 'std::_Ref_count_obj2<_Ty>::_Ref_count_obj2<dae::Scene&>(dae::Scene &)' being compiled
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.23.28105\include\memory(1593): message :         with
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.23.28105\include\memory(1593): message :         [
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.23.28105\include\memory(1593): message :             _Ty=dae::Scene
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.23.28105\include\memory(1593): message :         ]
+D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\BubbleBobble\Game.cpp(71): message : see reference to function template instantiation 'std::shared_ptr<dae::Scene> std::make_shared<dae::Scene,dae::Scene&>(dae::Scene &)' being compiled
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.23.28105\include\xmemory(200,12): error C2664: 'EnemyManager::EnemyManager(const EnemyManager &)': cannot convert argument 1 from 'std::shared_ptr<dae::Scene>' to 'dae::Scene *'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.23.28105\include\xmemory(200,33): message : No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\BubbleBobble\EnemyManager.h(11,2): message : see declaration of 'EnemyManager::EnemyManager'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.23.28105\include\memory(1492): message : see reference to function template instantiation 'void std::_Construct_in_place<_Ty,std::shared_ptr<dae::Scene>&,int>(_Ty &,std::shared_ptr<dae::Scene> &,int &&) noexcept(false)' being compiled
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.23.28105\include\memory(1492): message :         with
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.23.28105\include\memory(1492): message :         [
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.23.28105\include\memory(1492): message :             _Ty=EnemyManager
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.23.28105\include\memory(1492): message :         ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.23.28105\include\memory(1592): message : see reference to function template instantiation 'std::_Ref_count_obj2<_Ty>::_Ref_count_obj2<std::shared_ptr<dae::Scene>&,int>(std::shared_ptr<dae::Scene> &,int &&)' being compiled
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.23.28105\include\memory(1592): message :         with
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.23.28105\include\memory(1592): message :         [
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.23.28105\include\memory(1592): message :             _Ty=EnemyManager
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.23.28105\include\memory(1592): message :         ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.23.28105\include\memory(1593): message : see reference to function template instantiation 'std::_Ref_count_obj2<_Ty>::_Ref_count_obj2<std::shared_ptr<dae::Scene>&,int>(std::shared_ptr<dae::Scene> &,int &&)' being compiled
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.23.28105\include\memory(1593): message :         with
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.23.28105\include\memory(1593): message :         [
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.23.28105\include\memory(1593): message :             _Ty=EnemyManager
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.23.28105\include\memory(1593): message :         ]
+  GameInfo.cpp
+  main.cpp
+D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\BubbleBobble\Game.cpp(175): message : see reference to function template instantiation 'std::shared_ptr<EnemyManager> std::make_shared<EnemyManager,std::shared_ptr<dae::Scene>&,int>(std::shared_ptr<dae::Scene> &,int &&)' being compiled
+  Player.cpp
+  Wall.cpp
+  Generating Code...
+D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\BubbleBobble\main.cpp(4,10): fatal error C1083: Cannot open include file: 'vld.h': No such file or directory

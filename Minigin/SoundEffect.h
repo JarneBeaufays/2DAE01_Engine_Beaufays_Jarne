@@ -13,6 +13,7 @@ public:
 
 	// Functions
 	SoundEffect(const std::string& fileName, SoundEffectType type);
+	~SoundEffect();
 	SoundEffectType GetType() const { return m_SoundEffectType; }
 	void Play() const;
 

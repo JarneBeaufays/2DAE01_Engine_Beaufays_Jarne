@@ -1,6 +1,7 @@
 #pragma once
 #include "ObjectComponent.h"
 #include "Box2d.h"
+#include <memory>
 
 namespace dae { class Scene; }
 
@@ -31,7 +32,8 @@ public:
 
 	// Functions
 	RigidBody2D(dae::GameObject* pParent);
-	void Initialize(dae::Scene* pScene, const b2Vec2& size, const b2Vec2& position, b2BodyType type = b2_dynamicBody, float density = 1.0f, float friction = 0.1f, bool disableRot = false);
+	~RigidBody2D();
+	void Initialize(std::shared_ptr<dae::Scene> pScene, const b2Vec2& size, const b2Vec2& position, b2BodyType type = b2_dynamicBody, float density = 1.0f, float friction = 0.1f, bool disableRot = false);
 	void Update() override;
 	void AddForce(b2Vec2 force, bool pulse = false);
 	bool AddCollider(ObjectComponent* pCollider);

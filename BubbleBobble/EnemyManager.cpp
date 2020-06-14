@@ -2,7 +2,7 @@
 #include "..\Minigin\Time.h"
 #include "SceneManager.h"
 
-EnemyManager::EnemyManager(dae::Scene* pScene,  const int amount)
+EnemyManager::EnemyManager(std::shared_ptr<dae::Scene> pScene,  const int amount)
 	: m_AmountRemaining{ amount }
 	, m_pScene{ pScene }
 {

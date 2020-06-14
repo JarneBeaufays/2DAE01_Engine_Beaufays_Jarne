@@ -1,6 +1,18 @@
 #include "MiniginPCH.h"
 #include "StateMachineComponent.h"
 
+Transition::~Transition()
+{
+	delete m_pTargetState;
+	m_pTargetState = nullptr;
+
+	for (std::function<bool()>& pFunc : m_Conditions) 
+	{
+		delete &pFunc;
+		pFunc = nullptr;
+	}
+}
+
 bool Transition::Update()
 {
 	// Here we want to go over all of our conditions
@@ -50,6 +62,16 @@ State* State::Update()
 
 	// We want to stay in this state
 	return this;
+}
+
+StateMachineComponent::~StateMachineComponent()
+{
+	for (Transition* pTran : m_AnyStateTransitions) 
+	{
+		delete pTran;
+		pTran = nullptr;
+	}
+	m_AnyStateTransitions.clear();
 }
 
 void StateMachineComponent::Update()

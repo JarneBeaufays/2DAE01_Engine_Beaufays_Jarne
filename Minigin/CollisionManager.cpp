@@ -9,6 +9,16 @@ CollisionManager::CollisionManager()
 	SetName("CollisionManager");
 }
 
+CollisionManager::~CollisionManager()
+{
+	for (CollisionData* pData : m_CollisionDatas) 
+	{
+		delete pData;
+		pData = nullptr;
+	}
+	m_CollisionDatas.clear();
+}
+
 void CollisionManager::Update()
 {
 	// Add other game objects boxes

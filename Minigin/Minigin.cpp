@@ -48,6 +48,7 @@ void dae::Minigin::Initialize(unsigned int width, unsigned int height)
 void dae::Minigin::Cleanup()
 {
 	Renderer::GetInstance().Destroy();
+	AudioManager::GetInstance().Destroy();
 	SDL_DestroyWindow(m_Window);
 	m_Window = nullptr;
 	SDL_Quit();

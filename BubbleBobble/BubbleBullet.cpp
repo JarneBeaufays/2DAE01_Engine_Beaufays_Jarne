@@ -14,7 +14,7 @@ BubbleBullet::BubbleBullet(GameObject* pParent)
 	TagComponent* pTag{ new TagComponent(this, "BubbleBullet") };
 	AddComponent(pTag);
 
-	BoxCollider* pBoxCollider{ new BoxCollider(this, b2Vec2(), GetTransform().GetSize(), dae::SceneManager::GetInstance().GetCurrentScene()->GetPPM()) };
+	BoxCollider* pBoxCollider{ new BoxCollider(this, b2Vec2(), GetTransform().GetSize(), (float)dae::SceneManager::GetInstance().GetCurrentScene()->GetPPM()) };
 	AddComponent(pBoxCollider);
 
 	BoxTrigger* pBoxTrigger{ new BoxTrigger(this, GetTransform().GetPosition(), 1.1f * GetTransform().GetSize()) };
@@ -24,7 +24,7 @@ BubbleBullet::BubbleBullet(GameObject* pParent)
 	AddComponent(pSprite);
 
 	RigidBody2D* pRigidBody{ new RigidBody2D(this) };
-	pRigidBody->Initialize(dae::SceneManager::GetInstance().GetCurrentScene().get(), GetTransform().GetSize(), GetTransform().GetPosition());
+	pRigidBody->Initialize(dae::SceneManager::GetInstance().GetCurrentScene(), GetTransform().GetSize(), GetTransform().GetPosition());
 	pRigidBody->SetCollisionIgnoreGroup(CollisionGroup::colGroup2); // Enemies
 	pRigidBody->SetCollisionIgnoreGroup(CollisionGroup::colGroup3); // Player
 	pRigidBody->SetGravity(false);

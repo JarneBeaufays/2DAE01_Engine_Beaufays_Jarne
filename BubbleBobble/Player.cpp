@@ -11,16 +11,17 @@
 #include "BubbleBullet.h"
 #include "..\Minigin\Time.h"
 #include <iostream>
+#include <memory>
 
-Player::Player(dae::Scene* pScene, b2Vec2 position, b2Vec2 size)
+Player::Player(std::shared_ptr<dae::Scene> pScene, b2Vec2 position, b2Vec2 size)
 {
 	// Setting variables
 	GetTransform().SetPosition(position);
 	GetTransform().SetSize(size);
-	m_PPM = float(pScene->GetPPM());
+	m_PPM = pScene->GetPPM();
 
 	// Adding components	
-	BoxCollider* pBoxCollider{ new BoxCollider(this, 0.0f, 0.0f, size.x, size.y, m_PPM) };
+	BoxCollider* pBoxCollider{ new BoxCollider(this, 0.0f, 0.0f, size.x, size.y, (float)m_PPM) };
 	AddComponent(pBoxCollider);
 
 	RigidBody2D* pRigidBody{ new RigidBody2D(this) };
@@ -55,7 +56,7 @@ Player::Player(dae::Scene* pScene, b2Vec2 position, b2Vec2 size)
 	InitSounds();
 
 	// Setting scene
-	m_pScene = pScene;
+	m_spScene = pScene;
 }
 
 Player::~Player()
@@ -294,7 +295,7 @@ void Player::InitControls()
 		// OnPress:
 		[this]()
 		{
-			if(m_pScene == dae::SceneManager::GetInstance().GetCurrentScene().get()) if (GetComponent<HealthComponent>()->GetIsAlive()) GetComponent<AnimatorComponent>()->SetFlipped(false);
+			if(m_spScene == dae::SceneManager::GetInstance().GetCurrentScene()) if (GetComponent<HealthComponent>()->GetIsAlive()) GetComponent<AnimatorComponent>()->SetFlipped(false);
 		},
 
 		// OnRelease:
@@ -303,7 +304,7 @@ void Player::InitControls()
 		// OnDown: Move Right
 		[this]()
 		{
-			if (m_pScene == dae::SceneManager::GetInstance().GetCurrentScene().get()) if (GetComponent<HealthComponent>()->GetIsAlive()) GetComponent<RigidBody2D>()->AddForce(b2Vec2(20.f, 0.f));
+			if (m_spScene == dae::SceneManager::GetInstance().GetCurrentScene()) if (GetComponent<HealthComponent>()->GetIsAlive()) GetComponent<RigidBody2D>()->AddForce(b2Vec2(20.f, 0.f));
 		}
 	) };
 	dae::InputManager::GetInstance().CreateInputAction("WalkRight", pWalkRight, PhysicalButton::ButtonD);
@@ -313,7 +314,7 @@ void Player::InitControls()
 		// OnPress:
 		[this]()
 		{
-			if (m_pScene == dae::SceneManager::GetInstance().GetCurrentScene().get()) if (GetComponent<HealthComponent>()->GetIsAlive()) GetComponent<AnimatorComponent>()->SetFlipped(true);
+			if (m_spScene == dae::SceneManager::GetInstance().GetCurrentScene()) if (GetComponent<HealthComponent>()->GetIsAlive()) GetComponent<AnimatorComponent>()->SetFlipped(true);
 		},
 
 		// OnRelease:
@@ -323,7 +324,7 @@ void Player::InitControls()
 		[this]()
 		{
 			// If we are alive, move
-			if (m_pScene == dae::SceneManager::GetInstance().GetCurrentScene().get()) if(GetComponent<HealthComponent>()->GetIsAlive()) GetComponent<RigidBody2D>()->AddForce(b2Vec2(-20.f, 0.f));
+			if (m_spScene == dae::SceneManager::GetInstance().GetCurrentScene()) if(GetComponent<HealthComponent>()->GetIsAlive()) GetComponent<RigidBody2D>()->AddForce(b2Vec2(-20.f, 0.f));
 		}) };
 	dae::InputManager::GetInstance().CreateInputAction("WalkLeft", pWalkLeft, PhysicalButton::ButtonA);
 
@@ -332,7 +333,7 @@ void Player::InitControls()
 		// OnPress:
 		[this]()
 		{
-			if (m_pScene == dae::SceneManager::GetInstance().GetCurrentScene().get()) 
+			if (m_spScene == dae::SceneManager::GetInstance().GetCurrentScene()) 
 			{
 				if (m_AllowedToJump && GetComponent<HealthComponent>()->GetIsAlive())
 				{
@@ -355,7 +356,7 @@ void Player::InitControls()
 		// OnPress:
 		[this]()
 		{
-			if (m_pScene == dae::SceneManager::GetInstance().GetCurrentScene().get())
+			if (m_spScene == dae::SceneManager::GetInstance().GetCurrentScene())
 			{
 				if (GetComponent<HealthComponent>()->GetIsAlive() && m_AllowedToJump&& this->GetComponent<RigidBody2D>()->GetPosition().y > 150.f)
 				{
@@ -380,7 +381,7 @@ void Player::InitControls()
 		[this]()
 		{
 			// Let's shoot a bubble!
-			if (m_pScene == dae::SceneManager::GetInstance().GetCurrentScene().get()) 
+			if (m_spScene == dae::SceneManager::GetInstance().GetCurrentScene()) 
 			{
 				if (m_AllowedToShoot)
 				{

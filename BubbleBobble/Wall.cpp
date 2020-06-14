@@ -6,8 +6,9 @@
 #include "Renderer.h"
 #include "BoxCollider.h"
 #include "SpriteComponent.h"
+#include <memory>
 
-Wall::Wall(dae::Scene* pScene, const b2Vec2& position, const b2Vec2& size, bool ignoreColPlayerJump, bool invis)
+Wall::Wall(std::shared_ptr<dae::Scene> pScene, const b2Vec2& position, const b2Vec2& size, bool ignoreColPlayerJump, bool invis)
 {
 	// Setting variables
 	GetTransform().SetPosition(position);

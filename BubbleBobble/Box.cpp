@@ -9,7 +9,7 @@
 // SDL Includes
 #include <SDL.h>
 
-void Box::Initialize(dae::Scene* pScene, const b2Vec2& position, const b2Vec2& size)
+void Box::Initialize(std::shared_ptr<dae::Scene> pScene, const b2Vec2& position, const b2Vec2& size)
 {
 	// Setting variables
 	GetTransform().SetPosition(position);

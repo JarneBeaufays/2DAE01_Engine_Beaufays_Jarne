@@ -8,7 +8,7 @@
 #include "..\Minigin\Time.h"
 #include <iostream>
 
-Enemy::Enemy(dae::Scene* pScene, b2Vec2 position, b2Vec2 size, EnemyType enemyType, std::shared_ptr<EnemyManager> spEnemyManager)
+Enemy::Enemy(std::shared_ptr<dae::Scene> pScene, b2Vec2 position, b2Vec2 size, EnemyType enemyType, std::shared_ptr<EnemyManager> spEnemyManager)
 	: m_EnemyType{ enemyType }
 {
 	// Getting some variables

@@ -1,6 +1,7 @@
 #pragma once
 #include "Headers.h"
 #include "Game.h"
+#include <vld.h>
 
 int main(int, char* [])
 {

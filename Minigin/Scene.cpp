@@ -47,7 +47,11 @@ Scene::Scene(const std::string& name)
 	// Tell Box2D that we want to listen for
 }
 
-Scene::~Scene() = default;
+Scene::~Scene() 
+{
+	delete m_pPhysicsWorld;
+	m_pPhysicsWorld = nullptr;
+}
 
 void Scene::Add(std::shared_ptr<SceneObject> object)
 {
@@ -61,7 +65,7 @@ void Scene::Update()
 	for(auto& object : m_Objects) object->Update();
 
 	// Delete objects that must me deleted
-	for (int i{}; i < m_Objects.size(); i++)
+	for (unsigned int i{}; i < m_Objects.size(); i++)
 	{
 		if (m_Objects[i]->GetDelete())
 		{

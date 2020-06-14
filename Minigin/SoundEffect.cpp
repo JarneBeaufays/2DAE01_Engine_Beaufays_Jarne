@@ -12,6 +12,11 @@ SoundEffect::SoundEffect(const std::string& fileName, SoundEffectType type)
 	if (!m_pSoundEffect) std::cout << "Illegal sound effect with name: " << fileName << '\n';
 }
 
+SoundEffect::~SoundEffect()
+{
+	Mix_FreeChunk(m_pSoundEffect);
+}
+
 void SoundEffect::Play() const
 {
 	// Play the sound: -1 = channel, 0 = loops?
