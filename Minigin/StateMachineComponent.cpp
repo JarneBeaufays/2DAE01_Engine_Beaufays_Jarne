@@ -54,6 +54,12 @@ State* State::Update()
 
 void StateMachineComponent::Update()
 {
+	// First go over our any state transitions
+	for (Transition* pTrans : m_AnyStateTransitions) 
+	{
+		if (pTrans->Update()) m_pCurrentState = pTrans->GetTargetState();
+	}
+
 	// Update our currentState
 	m_pCurrentState = m_pCurrentState->Update();
 }

@@ -13,7 +13,6 @@ public:
 	void Render() const override;
 
 	void OnTriggerEnter() override;
-	void OnTriggerCollision() override;
 	void OnTriggerExit() override;
 
 private:
@@ -23,7 +22,14 @@ private:
 	void InitStateMachine();
 	void InitControls();
 	void InitSounds();
+	void HandleShooting();
+	void TeleportPlayer();
 
-	bool m_AllowedToJump = false;
+	// Variables
+	const float m_TimeBetweenAttack{ 0.3f };
+	float m_CurrentShootTimer{ 0.0f };
+	int m_PPM;
+	bool m_AllowedToShoot{ true };
+	bool m_AllowedToJump{ false };
 
 };

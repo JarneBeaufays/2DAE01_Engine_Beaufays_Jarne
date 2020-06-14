@@ -5,24 +5,6 @@ void CollisionManager::Update()
 {
 	// Update all our datas
 	for (CollisionData* pData : m_CollisionDatas) pData->Update();
-
-	// Getting some variables
-	std::vector<CollisionData*> triggerStarted;
-	std::vector<CollisionData*> triggerColliding;
-	std::vector<CollisionData*> triggerExited;
-
-	// Checking what objects are in what states
-	for (CollisionData* pData : m_CollisionDatas)
-	{
-		if (pData->GetState() == TriggerState::started) triggerStarted.push_back(pData);
-		else if (pData->GetState() == TriggerState::colliding) triggerColliding.push_back(pData);
-		else if (pData->GetState() == TriggerState::ended) triggerExited.push_back(pData);
-	}
-
-	// Updating our variables
-	m_TriggersEntered = triggerStarted;
-	m_TriggersColliding = triggerColliding;
-	m_TriggersExited = triggerExited;
 }
 
 void CollisionManager::AddBox(BoxTrigger* pBox)
@@ -35,23 +17,56 @@ void CollisionManager::AddBox(BoxTrigger* pBox)
 	}
 }
 
+std::vector<CollisionData*> CollisionManager::GetTriggersEntered() const
+{
+	std::vector<CollisionData*> pTriggers;
+	for (CollisionData* pData : m_CollisionDatas)
+	{
+		if (pData->GetState() == TriggerState::started) pTriggers.push_back(pData);
+	}
+	return pTriggers;
+}
+
+std::vector<CollisionData*> CollisionManager::GetTriggersColliding() const
+{
+	std::vector<CollisionData*> pTriggers;
+	for (CollisionData* pData : m_CollisionDatas)
+	{
+		if (pData->GetState() == TriggerState::colliding) pTriggers.push_back(pData);
+	}
+	return pTriggers;
+}
+
+std::vector<CollisionData*> CollisionManager::GetTriggersExited() const
+{
+	std::vector<CollisionData*> pTriggers;
+	for (CollisionData* pData : m_CollisionDatas)
+	{
+		if (pData->GetState() == TriggerState::ended) pTriggers.push_back(pData);
+	}
+	return pTriggers;
+}
+
 void CollisionManager::DeleteBox(BoxTrigger* pBox)
 {
 	// We want to delete the collision datas with this box
+	std::vector<unsigned int> toDelete;
+
+	// Get the different indexes where we can find this box
 	for (unsigned int i{}; i < m_CollisionDatas.size(); i++)
 	{
 		if (m_CollisionDatas[i]->GetBoxA() == pBox || m_CollisionDatas[i]->GetBoxB() == pBox)
 		{
-			// We store the one we want to delete in a temp var
-			CollisionData* pTemp{ m_CollisionDatas[i] };
-
-			// We move our back in the open spot and popback
-			m_CollisionDatas[i] = m_CollisionDatas.back();
-			m_CollisionDatas.pop_back();
-
-			// Delete the one that has to go
-			delete pTemp;
-			pTemp = nullptr;
+			toDelete.push_back(i);
 		}
 	}
+
+	// Remove all the collisions
+	for (unsigned int i{}; i < toDelete.size(); i++) 
+	{
+		delete m_CollisionDatas[toDelete[i]];
+		m_CollisionDatas[toDelete[i]] = m_CollisionDatas[(m_CollisionDatas.size() - 1) - i];
+	}
+
+	for (unsigned int i{}; i < toDelete.size(); i++) m_CollisionDatas.pop_back();
 }

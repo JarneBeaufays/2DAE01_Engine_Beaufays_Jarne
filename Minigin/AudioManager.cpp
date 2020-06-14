@@ -26,6 +26,10 @@ void AudioManager::Notify(dae::GameObject* pObject, ObserverEvent event)
 	case ObserverEvent::playerJumped:
 		PlaySound(SoundEffectType::jump);
 		break;
+
+	case ObserverEvent::playerDropped:
+		PlaySound(SoundEffectType::drop);
+		break;
 	}
 }
 

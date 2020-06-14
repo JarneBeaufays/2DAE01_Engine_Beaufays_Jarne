@@ -1,17 +1,15 @@
 #include "Player.h"
-#include "RigidBody2D.h"
-#include "SpriteComponent.h"
-#include "AnimatorComponent.h"
-#include "StateMachineComponent.h"
-#include "TagComponent.h"
 #include "Texture2D.h"
 #include "ResourceManager.h"
 #include "AudioManager.h"
 #include "Renderer.h"
-#include "BoxCollider.h"
 #include "CollisionManager.h"
 #include "InputManager.h"
 #include "SDL.h"
+#include "GameComponents.h"
+#include "EngineComponents.h"
+#include "BubbleBullet.h"
+#include "..\Minigin\Time.h"
 #include <iostream>
 
 Player::Player(dae::Scene* pScene, b2Vec2 position, b2Vec2 size)
@@ -19,21 +17,25 @@ Player::Player(dae::Scene* pScene, b2Vec2 position, b2Vec2 size)
 	// Setting variables
 	GetTransform().SetPosition(position);
 	GetTransform().SetSize(size);
-	float ppm = float(pScene->GetPPM());
+	m_PPM = float(pScene->GetPPM());
 
 	// Adding components	
+	BoxCollider* pBoxCollider{ new BoxCollider(this, 0.0f, 0.0f, size.x, size.y, m_PPM) };
+	AddComponent(pBoxCollider);
+
 	RigidBody2D* pRigidBody{ new RigidBody2D(this) };
 	pRigidBody->Initialize(pScene, size, position, b2BodyType::b2_dynamicBody, 1.f, 1.f, true);
+	pRigidBody->SetCollisionGroup(CollisionGroup::colGroup3);
 	AddComponent(pRigidBody);
-
-	BoxCollider* pBoxCollider{ new BoxCollider(this, 0.0f, 0.0f, size.x, size.y, ppm) };
-	AddComponent(pBoxCollider);
 
 	BoxTrigger* pBoxTrigger{ new BoxTrigger(this, position, 1.1f * size) };
 	AddComponent(pBoxTrigger);
 
 	TagComponent* pTagComponent{ new TagComponent(this, "Player") };
 	AddComponent(pTagComponent);
+
+	HealthComponent* pHealth{ new HealthComponent(this, 4) };
+	AddComponent(pHealth);
 
 	// Add Observer
 	AddObserver(static_cast<Observer*>(&AudioManager::GetInstance()));
@@ -55,6 +57,12 @@ void Player::Update()
 {
 	// Updating children
 	GameObject::Update();
+
+	// Handle shooting
+	HandleShooting();
+
+	// See if the player's position needs adjusting
+	TeleportPlayer();
 }
 
 void Player::Render() const
@@ -86,31 +94,12 @@ void Player::Render() const
 void Player::InitSprites()
 {
 	// ----- SPRITES AND ANIMATIONS ----- //
-	// Creating a regular sprite
-	SpriteComponent* pBombSpriteComponent{ new SpriteComponent(this, "Fly", "Sprites/Bomb.png", 0.05f, 10, 5, true) };
-	pBombSpriteComponent->SetOffset(-10.f, 50.f);
-	pBombSpriteComponent->SetSize(1.6f, 1.f);
-	pBombSpriteComponent->Flip();
-	AddComponent(pBombSpriteComponent);
-
 	// Creating an animator
-	SpriteComponent* pCheffIdle{ new SpriteComponent(this, "Idle", "Sprites/Cheff_Idle.png", 0.05f, 16, 4, true) };
-	pCheffIdle->SetSize(2.f, 1.2f);
-
-	SpriteComponent* pCheffRun{ new SpriteComponent(this, "Run", "Sprites/Cheff_Run.png", 0.05f, 16, 4, true) };
-	pCheffRun->SetSize(2.f, 1.2f);
-
-	SpriteComponent* pCheffJump{ new SpriteComponent(this, "Jump", "Sprites/Cheff_Jump.png", 0.05f, 4, 4, true) };
-	pCheffJump->SetSize(2.f, 1.2f);
-
-	SpriteComponent* pCheffLand{ new SpriteComponent(this, "Fall", "Sprites/Cheff_Fall.png") };
-	pCheffLand->SetSize(2.f, 1.2f);
+	SpriteComponent* pRun{ new SpriteComponent(this, "Run", "Sprites/Bob_Run.png", 0.05f, 8, 8, true) };
+	pRun->SetSize(1.6f, 1.f);
 
 	AnimatorComponent* pAnimator{ new AnimatorComponent(this) };
-	pAnimator->AddSprite(pCheffIdle);
-	pAnimator->AddSprite(pCheffRun);
-	pAnimator->AddSprite(pCheffJump);
-	pAnimator->AddSprite(pCheffLand);
+	pAnimator->AddSprite(pRun);
 	AddComponent(pAnimator);
 }
 
@@ -118,6 +107,8 @@ void Player::InitStateMachine()
 {
 	// ----- STATE MACHINE ----- STATE MACHINE ----- STATE MACHINE ----- //
 	// ----- STATES ----- //
+	State* pDeadState{ new State("Dead") };
+
 	// Idle State
 	State* pIdleState{ new State("Idle") };
 	std::function<void()> onEntryIdle
@@ -125,7 +116,6 @@ void Player::InitStateMachine()
 		[this]()
 		{ 
 			AnimatorComponent* pAnim{ static_cast<AnimatorComponent*>(this->GetComponent("AnimatorComponent"))};
-			pAnim->SetActiveSprite("Idle");
 		}
 	};
 	pIdleState->AddEntryAction(onEntryIdle);
@@ -157,7 +147,6 @@ void Player::InitStateMachine()
 		[this]()
 		{
 			static_cast<RigidBody2D*>(GetComponent("RigidBody2D"))->SetCollisionGroup(CollisionGroup::colGroup5);
-			static_cast<AnimatorComponent*>(this->GetComponent("AnimatorComponent"))->SetActiveSprite("Jump");
 		}
 	};
 	pJumpState->AddEntryAction(onEntryJump);
@@ -168,14 +157,14 @@ void Player::InitStateMachine()
 	{
 		[this]()
 		{
-			static_cast<AnimatorComponent*>(this->GetComponent("AnimatorComponent"))->SetActiveSprite("Fall");
+			static_cast<RigidBody2D*>(GetComponent("RigidBody2D"))->SetCollisionGroup(CollisionGroup::colGroup5);
 		}
 	};
 	std::function<void()> onExitFall
 	{
 		[this]()
 		{
-			static_cast<RigidBody2D*>(GetComponent("RigidBody2D"))->SetCollisionGroup(CollisionGroup::colGroup1);
+			static_cast<RigidBody2D*>(GetComponent("RigidBody2D"))->SetCollisionGroup(CollisionGroup::colGroup3);
 		}
 	};
 	pFallingState->AddEntryAction(onEntryFall);
@@ -266,12 +255,24 @@ void Player::InitStateMachine()
 	};
 	pTranRunningToIdle->AddCondition(idleCondition);
 	pRunningState->AddTransition(pTranRunningToIdle);
+
+	// Transition: ANY -> Dead
+	Transition* pTranAnyToIdle{ new Transition(pDeadState) };
+	std::function<bool()> deadCondition
+	{
+		[this]()
+		{
+			return this->GetComponent<HealthComponent>()->GetIsDead();
+		}
+	};
+	pTranAnyToIdle->AddCondition(deadCondition);
 	// ---
 
 
 
 	// Now we create the component and give our starting state to it
 	StateMachineComponent* pStateMachine{ new StateMachineComponent(this, pIdleState) };
+	pStateMachine->AddAnyStateTransition(pTranAnyToIdle);
 	AddComponent(pStateMachine);
 }
 
@@ -283,18 +284,16 @@ void Player::InitControls()
 		// OnPress:
 		[this]()
 		{ 
-			std::cout << "IM: On Press -> Player started walking -> Right ->\n"; 
-			AnimatorComponent* pAnim{ static_cast<AnimatorComponent*>(this->GetComponent("AnimatorComponent")) };
-			pAnim->SetFlipped(false);
+			if (GetComponent<HealthComponent>()->GetIsAlive()) GetComponent<AnimatorComponent>()->SetFlipped(false);
 		},
 
 		// OnRelease:
-		[]() {std::cout << "IM: On Release -> Player stopped walking -> Right ->\n"; },
+		[]() { },
 
 		// OnDown: Move Right
 		[this]()
 		{
-			static_cast<RigidBody2D*>(this->GetComponent("RigidBody2D"))->AddForce(b2Vec2(20.f, 0.f)); 
+			if (GetComponent<HealthComponent>()->GetIsAlive()) GetComponent<RigidBody2D>()->AddForce(b2Vec2(20.f, 0.f));
 		}
 	) };
 	dae::InputManager::GetInstance().CreateInputAction("WalkRight", pWalkRight, PhysicalButton::ButtonD);
@@ -304,18 +303,17 @@ void Player::InitControls()
 		// OnPress:
 		[this]()
 		{
-			std::cout << "IM: On Press -> Player started walking <- Left <-\n";
-			AnimatorComponent* pAnim{ static_cast<AnimatorComponent*>(this->GetComponent("AnimatorComponent")) };
-			pAnim->SetFlipped(true);
+			if (GetComponent<HealthComponent>()->GetIsAlive()) GetComponent<AnimatorComponent>()->SetFlipped(true);
 		},
 
 		// OnRelease:
-		[]() {std::cout << "IM: On Release -> Player stopped walking <- Left <-\n"; },
+		[]() { },
 
 		// OnDown: Move Right
 		[this]()
 		{
-			static_cast<RigidBody2D*>(this->GetComponent("RigidBody2D"))->AddForce(b2Vec2(-20.f, 0.f));
+			// If we are alive, move
+			if(GetComponent<HealthComponent>()->GetIsAlive()) GetComponent<RigidBody2D>()->AddForce(b2Vec2(-20.f, 0.f));
 		}) };
 	dae::InputManager::GetInstance().CreateInputAction("WalkLeft", pWalkLeft, PhysicalButton::ButtonA);
 
@@ -324,11 +322,10 @@ void Player::InitControls()
 		// OnPress:
 		[this]()
 		{
-			if (this->m_AllowedToJump) 
+			if (m_AllowedToJump && GetComponent<HealthComponent>()->GetIsAlive())
 			{
-				std::cout << "IM: On Press -> Player jumped\n";
 				Notify(this, ObserverEvent::playerJumped);
-				static_cast<RigidBody2D*>(this->GetComponent("RigidBody2D"))->AddForce(b2Vec2(0.f, 25.f), true);
+				GetComponent<RigidBody2D>()->AddForce(b2Vec2(0.f, 25.f), true);
 			}
 		},
 
@@ -340,6 +337,44 @@ void Player::InitControls()
 	) };
 	dae::InputManager::GetInstance().CreateInputAction("Jump", pJump, PhysicalButton::ButtonZ);
 
+	// Drop
+	Command* pDrop{ new Command(
+		// OnPress:
+		[this]()
+		{
+			if (GetComponent<HealthComponent>()->GetIsAlive() && m_AllowedToJump && this->GetComponent<RigidBody2D>()->GetPosition().y > 150.f)
+			{
+				std::cout << "IM: On Press -> Player dropped\n";
+				Notify(this, ObserverEvent::playerDropped);
+				m_AllowedToJump = false;
+			}
+		},
+
+		// OnRelease:
+		[]() {},
+
+		// OnDown: Move Right
+		[this]() {}
+		) };
+	dae::InputManager::GetInstance().CreateInputAction("Drop", pDrop, PhysicalButton::ButtonS);
+
+	// Shoot
+	Command* pShoot{ new Command(
+		// OnPress:
+		[this]()
+		{
+			// Let's shoot a bubble!
+			if (m_AllowedToShoot) 
+			{
+				m_AllowedToShoot = false;
+				std::shared_ptr<BubbleBullet> spBullet{ std::make_shared<BubbleBullet>(this) };
+				dae::SceneManager::GetInstance().GetCurrentScene()->Add(spBullet);
+			}
+		},
+		[]() {},
+		[]() {}
+		) };
+	dae::InputManager::GetInstance().CreateInputAction("Shoot", pShoot, PhysicalButton::ButtonE);
 }
 
 void Player::InitSounds()
@@ -347,6 +382,35 @@ void Player::InitSounds()
 	// Add a sound to our audio manager
 	AudioManager::GetInstance().AddSoundEffect("Sounds/Walk.wav", SoundEffectType::walk);
 	AudioManager::GetInstance().AddSoundEffect("Sounds/Jump.wav", SoundEffectType::jump);
+	AudioManager::GetInstance().AddSoundEffect("Sounds/Drop.wav", SoundEffectType::drop);
+}
+
+void Player::HandleShooting()
+{
+	if (!m_AllowedToShoot) 
+	{
+		m_CurrentShootTimer += Time::GetInstance().GetDeltaTime();
+		if (m_CurrentShootTimer > m_TimeBetweenAttack)
+		{
+			m_AllowedToShoot = true;
+			m_CurrentShootTimer = 0.0f;
+		}
+	}
+}
+
+void Player::TeleportPlayer()
+{
+	// Getting some variables
+	RigidBody2D* pRb{ GetComponent<RigidBody2D>() };
+	b2Vec2 position{ pRb->GetPosition() };
+
+	// Check if the player is escaping the map
+	if (position.y * m_PPM < -50.f)
+	{
+		// Set player position to the top
+		pRb->SetPosition(b2Vec2{ position.x / m_PPM, (dae::Renderer::GetInstance().GetWindowHeight() - 50.f) / m_PPM });
+		pRb->SetLinVelocity(b2Vec2{ 0.f, 0.f });
+	}
 }
 
 void Player::OnTriggerEnter()
@@ -372,7 +436,7 @@ void Player::OnTriggerEnter()
 					else { pPlayer = colData->GetBoxB()->GetParent(); pGround = colData->GetBoxA()->GetParent(); }
 
 					// Checking if the ground is below us
-					if (pGround->GetTransform().GetPosition().y > pPlayer->GetTransform().GetPosition().y)
+					if (pGround->GetComponent<RigidBody2D>()->GetPosition().y < pPlayer->GetComponent<RigidBody2D>()->GetPosition().y)
 					{
 						// Now that we know the ground is below us, we know we are landing on it
 						m_AllowedToJump = true;
@@ -380,33 +444,6 @@ void Player::OnTriggerEnter()
 				}
 			}
 		}
-	}
-}
-
-void Player::OnTriggerCollision()
-{
-	if (false)
-	{
-		// Get all the triggers that just started
-		int i{  };
-		std::vector<CollisionData*> triggersCollided{ CollisionManager::GetInstance().GetTriggersColliding() };
-		for (CollisionData* colData : triggersCollided)
-		{
-			// Get tags from triggers
-			TagComponent* tagA{ static_cast<TagComponent*>(colData->GetBoxA()->GetParent()->GetComponent("TagComponent")) };
-			TagComponent* tagB{ static_cast<TagComponent*>(colData->GetBoxB()->GetParent()->GetComponent("TagComponent")) };
-			if (tagA && tagB)
-			{
-				// If the tags are not nullptrs
-				if ((tagA->CompareTag("Player") && tagB->CompareTag("Box")) || (tagA->CompareTag("Box") && tagB->CompareTag("Player")))
-				{
-					// The player triggerd with a box
-					i++;
-				}
-			}
-		}
-
-		std::cout << std::to_string(i) << '\n';
 	}
 }
 
@@ -436,7 +473,7 @@ void Player::OnTriggerExit()
 						else { pPlayer = colData->GetBoxB()->GetParent(); pGround = colData->GetBoxA()->GetParent(); }
 
 						// Checking if the ground is below us
-						if (pGround->GetTransform().GetPosition().y > pPlayer->GetTransform().GetPosition().y)
+						if (pGround->GetComponent<RigidBody2D>()->GetPosition().y < pPlayer->GetComponent<RigidBody2D>()->GetPosition().y)
 						{
 							// Now that we know the ground is below us, we know we are jumping
 							m_AllowedToJump = false;

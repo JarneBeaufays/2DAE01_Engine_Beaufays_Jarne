@@ -31,16 +31,19 @@ void HighScore::Update()
 	// Update children
 	dae::GameObject::Update();
 
-	// Update timer
-	TextComponent* pText{ static_cast<TextComponent*>(GetComponent("TextComponent")) };
-	if (pText) 
+	// Getting our components
+	std::vector<TextComponent*> textComponents;
+	for (ObjectComponent* pObj : GetComponents("TextComponent")) textComponents.push_back(dynamic_cast<TextComponent*>(pObj));
+
+	// Updating time
+	m_CurrentTimer += Time::GetInstance().GetDeltaTime();
+	if (m_CurrentTimer >= 1)
 	{
-		m_CurrentTimer += Time::GetInstance().GetDeltaTime();
-		if (m_CurrentTimer >= 1) 
-		{
-			m_CurrentTimer = 0;
-			m_SecondsInGame++;
-			pText->SetText(std::to_string(m_SecondsInGame));
-		}
+		m_CurrentTimer = 0;
+		m_SecondsInGame++;
+		textComponents[0]->SetText(std::to_string(m_SecondsInGame));
 	}
+
+	// Check if we have to update our score
+	textComponents[2]->SetText(std::to_string((int)m_Points));
 }

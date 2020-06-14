@@ -32,6 +32,11 @@ InputAction* dae::InputManager::GetInputAction(const std::string& inputAction)
 
 bool dae::InputManager::ProcessInput()
 {
+	// Check if player wants to exit
+	SDL_Event Events;
+	SDL_PollEvent(&Events);
+	if (Events.type == SDL_QUIT) return false;
+
 	// Controller input via XInput
 	ZeroMemory(&m_CurrentState, sizeof(XINPUT_STATE));
 	XInputGetState(1, &m_CurrentState);
