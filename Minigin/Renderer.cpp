@@ -2,7 +2,6 @@
 #include "Renderer.h"
 #include <SDL.h>
 #include "SceneManager.h"
-#include "..\BubbleBobble\GameInfo.h"
 #include "Texture2D.h"
 
 void dae::Renderer::Init(SDL_Window * window, unsigned int width, unsigned int height)
@@ -21,8 +20,7 @@ void dae::Renderer::Render() const
 	SDL_RenderClear(m_Renderer);
 
 	SceneManager::GetInstance().Render();
-	GameInfo::GetInstance().Render();
-
+	
 	SDL_RenderPresent(m_Renderer);
 }
 

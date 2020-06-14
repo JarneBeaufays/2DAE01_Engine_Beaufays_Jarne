@@ -19,12 +19,6 @@
     <Filter Include="Game\GameObjects">
       <UniqueIdentifier>{34f762c9-4558-43f2-b360-3f42e4e72378}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\GameComponents">
-      <UniqueIdentifier>{6271f47b-0ea6-40d6-9027-90cd209c3884}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Header Files">
-      <UniqueIdentifier>{a0f92cbc-338d-4742-bccd-d2f9aa1497a7}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -51,27 +45,12 @@
     <ClCompile Include="Ground.cpp">
       <Filter>Game\GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>Game\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="HealthComponent.cpp">
-      <Filter>Game\GameComponents</Filter>
-    </ClCompile>
-    <ClCompile Include="BubbleBullet.cpp">
-      <Filter>Game\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="GameInfo.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneTimer.cpp">
-      <Filter>Game\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyManager.cpp">
-      <Filter>Game\GameObjects</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers.h">
       <Filter>Game</Filter>
     </ClInclude>
     <ClInclude Include="BackgroundImage.h">
@@ -90,33 +69,6 @@
       <Filter>Game\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="Ground.h">
-      <Filter>Game\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>Game\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="HealthComponent.h">
-      <Filter>Game\GameComponents</Filter>
-    </ClInclude>
-    <ClInclude Include="EngineComponents.h">
-      <Filter>Game\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameComponents.h">
-      <Filter>Game\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Headers.h">
-      <Filter>Game\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BubbleBullet.h">
-      <Filter>Game\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="GameInfo.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneTimer.h">
-      <Filter>Game\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyManager.h">
       <Filter>Game\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>

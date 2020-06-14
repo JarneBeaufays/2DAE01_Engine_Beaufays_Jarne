@@ -1,7 +1,6 @@
 #include "MiniginPCH.h"
 #include "Scene.h"
 #include "GameObject.h"
-#include "CollisionManager.h"
 #include "Time.h"
 
 using namespace dae;
@@ -30,23 +29,6 @@ void Scene::Update()
 {
 	// Update each object in our scene
 	for(auto& object : m_Objects) object->Update();
-
-	// Delete objects that must me deleted
-	for (int i{}; i < m_Objects.size(); i++)
-	{
-		if (m_Objects[i]->GetDelete())
-		{
-			// Delete object
-			// Remove the collision data
-			GameObject* pTemp{ dynamic_cast<GameObject*>(m_Objects[i].get()) };
-			CollisionManager::GetInstance().DeleteBox(pTemp->GetComponent<BoxTrigger>());
-
-			// Remove the object from the list
-			m_Objects[i] = m_Objects.back();
-			m_Objects.pop_back();
-			return;
-		}
-	}
 
 	// Update our physics world
 	m_pPhysicsWorld->Step(Time::GetInstance().GetDeltaTime(), 6, 2);

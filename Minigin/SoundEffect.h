@@ -4,7 +4,7 @@
 
 enum class SoundEffectType 
 {
-	walk, jump, land, drop
+	walk, jump, land
 };
 
 class SoundEffect
@@ -23,3 +23,4 @@ private:
 	SoundEffectType m_SoundEffectType;
 
 };
+

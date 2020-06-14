@@ -7,7 +7,7 @@
 #include "BoxCollider.h"
 #include "SpriteComponent.h"
 
-Wall::Wall(dae::Scene* pScene, const b2Vec2& position, const b2Vec2& size, bool ignoreColPlayerJump, bool invis)
+Wall::Wall(dae::Scene* pScene, const b2Vec2& position, const b2Vec2& size, bool ignoreColPlayerJump)
 {
 	// Setting variables
 	GetTransform().SetPosition(position);
@@ -15,11 +15,8 @@ Wall::Wall(dae::Scene* pScene, const b2Vec2& position, const b2Vec2& size, bool 
 	float ppm = float(pScene->GetPPM());
 
 	// Adding components
-	if (!invis) 
-	{
-		SpriteComponent* pSprite{ new SpriteComponent(this, "Idle", "BBSprites/wall.png") };
-		AddComponent(pSprite);
-	}
+	SpriteComponent* pSprite{ new SpriteComponent(this, "Idle", "BBSprites/wall.png") };
+	AddComponent(pSprite);
 
 	BoxCollider* pBoxCollider{ new BoxCollider(this, 0.0f, 0.0f, size.x, size.y, ppm) };
 	AddComponent(pBoxCollider);
@@ -29,7 +26,7 @@ Wall::Wall(dae::Scene* pScene, const b2Vec2& position, const b2Vec2& size, bool 
 
 	RigidBody2D* pRigidBody{ new RigidBody2D(this) };
 	pRigidBody->Initialize(pScene, size, position, b2_staticBody);
-	if(!ignoreColPlayerJump) pRigidBody->SetCollisionIgnoreGroup(CollisionGroup::colGroup5);
+	if(!ignoreColPlayerJump) pRigidBody->SetCollisionIgnoreGroup(CollisionGroup::colGroup8);
 	AddComponent(pRigidBody);
 
 	TagComponent* pTagComponent{ new TagComponent(this, "Wall") };

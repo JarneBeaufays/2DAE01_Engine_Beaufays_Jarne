@@ -26,8 +26,6 @@ namespace dae
 		void Render() const override;
 		
 		// Functions
-		template<class T>
-		T* GetComponent() const;
 		ObjectComponent* GetComponent(const std::string& componentName) const;
 		std::vector<ObjectComponent*> GetComponents(const std::string& componentName) const;
 		void AddComponent(ObjectComponent* component);
@@ -46,18 +44,4 @@ namespace dae
 		std::vector<ObjectComponent*> m_pComponents;
 	
 	};
-
-	template<class T>
-	inline T* GameObject::GetComponent() const
-	{
-		// Loop over all our components
-		for (ObjectComponent* pComponent : m_pComponents) 
-		{
-			T* temp{ dynamic_cast<T*>(pComponent) };
-			if (temp) return temp;
-		}
-
-		// This component hasn't been found
-		return nullptr;
-	}
 }

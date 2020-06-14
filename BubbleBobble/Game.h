@@ -16,12 +16,7 @@ private:
 	// Private Functions
 	bool CreateScenes();
 	void CleanPrivatePointers();
-	void CreateStartScene();
-	void CreateWinScene();
 	void CreateSceneOne();
-	void CreateSceneTwo();
-	void CreateSceneThree();
-	void CreateEndScene();
 
 	// Variables
 	dae::Minigin* m_pEngine;
