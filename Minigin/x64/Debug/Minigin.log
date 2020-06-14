@@ -1,4 +1,18 @@
-﻿  RigidBody2D.cpp
+﻿  AnimatorComponent.cpp
+  AudioManager.cpp
+  BoxCollider.cpp
+  BoxTrigger.cpp
+  Button.cpp
+  CollisionData.cpp
+  CollisionManager.cpp
+  Command.cpp
+  Font.cpp
+  GameObject.cpp
+  ImageComponent.cpp
+  InputManager.cpp
+  LocalTransform.cpp
+  Minigin.cpp
+  Generating Code...
   Minigin.vcxproj -> D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\x64\Debug\Minigin.lib
   D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\3rdParty\SDL2\lib\x64\SDL2.dll
   1 File(s) copied
