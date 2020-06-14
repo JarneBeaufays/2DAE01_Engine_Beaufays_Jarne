@@ -1,8 +1,4 @@
-﻿  Enemy.cpp
-  Game.cpp
-  HealthComponent.cpp
-  Player.cpp
+﻿  Player.cpp
 D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\BubbleBobble\Player.cpp(20,15): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-  Generating Code...
 D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\BubbleBobble\Player.cpp(23,79): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   BubbleBobble.vcxproj -> D:\School\School\2019-20\Programming 4\Week 05\2DAE01_Engine_Beaufays_Jarne\x64\Debug\BubbleBobble.exe

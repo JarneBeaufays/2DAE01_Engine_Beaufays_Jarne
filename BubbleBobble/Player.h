@@ -3,6 +3,7 @@
 #include "Box2D.h"
 #include "Observer.h"
 
+namespace dae { class Scene; }
 class Player : public dae::GameObject, public Subject
 {
 public:
@@ -27,6 +28,7 @@ private:
 	void TeleportPlayer();
 
 	// Variables
+	dae::Scene* m_pScene;
 	const float m_TimeBetweenAttack{ 0.3f };
 	float m_CurrentShootTimer{ 0.0f };
 	int m_PPM;

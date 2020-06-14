@@ -135,6 +135,9 @@
     <ClInclude Include="AudioManager.h">
       <Filter>Engine\AlphaEngine\Other Classes</Filter>
     </ClInclude>
+    <ClInclude Include="Song.h">
+      <Filter>Engine\AlphaEngine\Other Classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Font.cpp">
@@ -231,6 +234,9 @@
       <Filter>Engine\AlphaEngine\Other Classes</Filter>
     </ClCompile>
     <ClCompile Include="SoundEffect.cpp">
+      <Filter>Engine\AlphaEngine\Other Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Song.cpp">
       <Filter>Engine\AlphaEngine\Other Classes</Filter>
     </ClCompile>
   </ItemGroup>

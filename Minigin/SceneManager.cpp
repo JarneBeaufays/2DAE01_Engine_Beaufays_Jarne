@@ -1,6 +1,7 @@
 #include "MiniginPCH.h"
 #include "SceneManager.h"
 #include "Scene.h"
+#include "..\BubbleBobble\Player.h"
 
 dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
 {

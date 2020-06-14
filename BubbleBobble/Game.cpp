@@ -3,6 +3,7 @@
 #include "Ground.h"
 #include "BackgroundImage.h"
 #include "CollisionManager.h"
+#include "AudioManager.h"
 #include "EnemyManager.h"
 #include "Box.h"
 #include "GameObject.h"

@@ -37,6 +37,8 @@ Player::Player(dae::Scene* pScene, b2Vec2 position, b2Vec2 size)
 	HealthComponent* pHealth{ new HealthComponent(this, 4) };
 	AddComponent(pHealth);
 
+	SetName("Player");
+
 	// Add Observer
 	AddObserver(static_cast<Observer*>(&AudioManager::GetInstance()));
 
@@ -51,6 +53,9 @@ Player::Player(dae::Scene* pScene, b2Vec2 position, b2Vec2 size)
 
 	// Creating our sounds
 	InitSounds();
+
+	// Setting scene
+	m_pScene = pScene;
 }
 
 Player::~Player()
@@ -288,8 +293,8 @@ void Player::InitControls()
 	Command* pWalkRight{ new Command(
 		// OnPress:
 		[this]()
-		{ 
-			if (GetComponent<HealthComponent>()->GetIsAlive()) GetComponent<AnimatorComponent>()->SetFlipped(false);
+		{
+			if(m_pScene == dae::SceneManager::GetInstance().GetCurrentScene().get()) if (GetComponent<HealthComponent>()->GetIsAlive()) GetComponent<AnimatorComponent>()->SetFlipped(false);
 		},
 
 		// OnRelease:
@@ -298,7 +303,7 @@ void Player::InitControls()
 		// OnDown: Move Right
 		[this]()
 		{
-			if (GetComponent<HealthComponent>()->GetIsAlive()) GetComponent<RigidBody2D>()->AddForce(b2Vec2(20.f, 0.f));
+			if (m_pScene == dae::SceneManager::GetInstance().GetCurrentScene().get()) if (GetComponent<HealthComponent>()->GetIsAlive()) GetComponent<RigidBody2D>()->AddForce(b2Vec2(20.f, 0.f));
 		}
 	) };
 	dae::InputManager::GetInstance().CreateInputAction("WalkRight", pWalkRight, PhysicalButton::ButtonD);
@@ -308,7 +313,7 @@ void Player::InitControls()
 		// OnPress:
 		[this]()
 		{
-			if (GetComponent<HealthComponent>()->GetIsAlive()) GetComponent<AnimatorComponent>()->SetFlipped(true);
+			if (m_pScene == dae::SceneManager::GetInstance().GetCurrentScene().get()) if (GetComponent<HealthComponent>()->GetIsAlive()) GetComponent<AnimatorComponent>()->SetFlipped(true);
 		},
 
 		// OnRelease:
@@ -318,7 +323,7 @@ void Player::InitControls()
 		[this]()
 		{
 			// If we are alive, move
-			if(GetComponent<HealthComponent>()->GetIsAlive()) GetComponent<RigidBody2D>()->AddForce(b2Vec2(-20.f, 0.f));
+			if (m_pScene == dae::SceneManager::GetInstance().GetCurrentScene().get()) if(GetComponent<HealthComponent>()->GetIsAlive()) GetComponent<RigidBody2D>()->AddForce(b2Vec2(-20.f, 0.f));
 		}) };
 	dae::InputManager::GetInstance().CreateInputAction("WalkLeft", pWalkLeft, PhysicalButton::ButtonA);
 
@@ -327,10 +332,13 @@ void Player::InitControls()
 		// OnPress:
 		[this]()
 		{
-			if (m_AllowedToJump && GetComponent<HealthComponent>()->GetIsAlive())
+			if (m_pScene == dae::SceneManager::GetInstance().GetCurrentScene().get()) 
 			{
-				Notify(this, ObserverEvent::playerJumped);
-				GetComponent<RigidBody2D>()->AddForce(b2Vec2(0.f, 25.f), true);
+				if (m_AllowedToJump && GetComponent<HealthComponent>()->GetIsAlive())
+				{
+					Notify(this, ObserverEvent::playerJumped);
+					GetComponent<RigidBody2D>()->AddForce(b2Vec2(0.f, 25.f), true);
+				}
 			}
 		},
 
@@ -347,11 +355,14 @@ void Player::InitControls()
 		// OnPress:
 		[this]()
 		{
-			if (GetComponent<HealthComponent>()->GetIsAlive() && m_AllowedToJump && this->GetComponent<RigidBody2D>()->GetPosition().y > 150.f)
+			if (m_pScene == dae::SceneManager::GetInstance().GetCurrentScene().get())
 			{
-				std::cout << "IM: On Press -> Player dropped\n";
-				Notify(this, ObserverEvent::playerDropped);
-				m_AllowedToJump = false;
+				if (GetComponent<HealthComponent>()->GetIsAlive() && m_AllowedToJump&& this->GetComponent<RigidBody2D>()->GetPosition().y > 150.f)
+				{
+					std::cout << "IM: On Press -> Player dropped\n";
+					Notify(this, ObserverEvent::playerDropped);
+					m_AllowedToJump = false;
+				}
 			}
 		},
 
@@ -369,12 +380,15 @@ void Player::InitControls()
 		[this]()
 		{
 			// Let's shoot a bubble!
-			if (m_AllowedToShoot) 
+			if (m_pScene == dae::SceneManager::GetInstance().GetCurrentScene().get()) 
 			{
-				m_AllowedToShoot = false;
-				std::shared_ptr<BubbleBullet> spBullet{ std::make_shared<BubbleBullet>(this) };
-				dae::SceneManager::GetInstance().GetCurrentScene()->Add(spBullet);
-				dae::SceneManager::GetInstance().GetCurrentScene()->GetCollisionManager()->AddBox(spBullet->GetComponent<BoxTrigger>());
+				if (m_AllowedToShoot)
+				{
+					m_AllowedToShoot = false;
+					std::shared_ptr<BubbleBullet> spBullet{ std::make_shared<BubbleBullet>(this) };
+					dae::SceneManager::GetInstance().GetCurrentScene()->Add(spBullet);
+					dae::SceneManager::GetInstance().GetCurrentScene()->GetCollisionManager()->AddBox(spBullet->GetComponent<BoxTrigger>());
+				}
 			}
 		},
 		[]() {},

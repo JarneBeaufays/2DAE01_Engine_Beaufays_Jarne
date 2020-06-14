@@ -21,7 +21,7 @@ RigidBody2D::RigidBody2D(dae::GameObject* pParent)
 void RigidBody2D::Initialize(dae::Scene* pScene, const b2Vec2& size, const b2Vec2& position, b2BodyType type, float density, float friction, bool disableRot)
 {
 	// Checking if we have a static body
-	if(type != b2BodyType::b2_staticBody) m_IsStatic = false;
+	if (type != b2BodyType::b2_staticBody) m_IsStatic = false;
 
 	// We need the pixel per meter for more realistic physics scaling
 	m_PPM = pScene->GetPPM();
@@ -33,7 +33,7 @@ void RigidBody2D::Initialize(dae::Scene* pScene, const b2Vec2& size, const b2Vec
 
 	// Creating our body object
 	m_pBody = pScene->CreateBody(&bodyDef);
-	
+
 	// Making sure our Rb doesn't rotate user wants
 	m_pBody->SetFixedRotation(disableRot);
 

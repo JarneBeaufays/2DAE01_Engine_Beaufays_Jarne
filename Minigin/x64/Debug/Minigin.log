@@ -23,6 +23,7 @@
   Compiling...
   SceneManager.cpp
   Singleton.cpp
+  Song.cpp
   SoundEffect.cpp
   SpriteComponent.cpp
   StateMachineComponent.cpp

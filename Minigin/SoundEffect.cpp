@@ -18,6 +18,7 @@ void SoundEffect::Play() const
 	if (m_pSoundEffect) 
 	{
 		// If the sound is not playing already, play it
-		if(!Mix_Playing(-1)) Mix_PlayChannel(-1, m_pSoundEffect, 0);
+		//if(!Mix_Playing(-1))
+			Mix_PlayChannel(-1, m_pSoundEffect, 0);
 	}
 }

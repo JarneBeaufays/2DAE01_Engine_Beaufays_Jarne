@@ -2,6 +2,7 @@
 #include "Scene.h"
 #include "GameObject.h"
 #include "CollisionManager.h"
+#include "..\BubbleBobble\Player.h"
 #include "Time.h"
 
 using namespace dae;
@@ -17,6 +18,20 @@ CollisionManager* dae::Scene::GetCollisionManager() const
 		{
 			if (obj->GetName() == "CollisionManager")
 				return dynamic_cast<CollisionManager*>(obj);
+		}
+	}
+	return nullptr;
+}
+
+Player* dae::Scene::GetPlayer() const
+{
+	for (auto ob : m_Objects)
+	{
+		dae::GameObject* obj{ dynamic_cast<dae::GameObject*>(ob.get()) };
+		if (obj)
+		{
+			if (obj->GetName() == "Player")
+				return dynamic_cast<Player*>(obj);
 		}
 	}
 	return nullptr;
